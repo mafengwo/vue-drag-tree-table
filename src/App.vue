@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-  <vueDragTreeTable :lists="treeData" @onChange="onTreeDataChange"></vueDragTreeTable>
+  <dragTreeTable :lists="treeData" :onDrag="onTreeDataChange"></dragTreeTable>
   </div>
 </template>
 
 <script>
-import vueDragTreeTable from './lib/vueDragTreeTable.vue';
+import dragTreeTable from './lib/dragTreeTable.vue';
 export default {
   name: 'app',
   data () {
@@ -17,11 +17,11 @@ export default {
     }
   },
   components: {
-      vueDragTreeTable
+      dragTreeTable
   },
   methods: {
-    onTreeDataChange() {
-
+    onTreeDataChange(list) {
+      this.treeData.data = list
     },
     onEdit(item) {
         console.log('编辑', item)
@@ -34,16 +34,7 @@ export default {
       },
       onAdd(item){
         console.log('添加', item)
-      },
-      formatTree(list) {
-        for( let i = 0; i < list.length; i++) {
-            var item = list[i]
-            item.open = true
-            if (item.lists.length) {
-              this.formatTree(item.lists)
-            }
-          }
-      },
+      }
   },
   mounted() {
     var columns = [
@@ -51,39 +42,56 @@ export default {
               type: 'selection',
               title: '菜单名称',
               field: 'name',
-              width: '200',
-              align: 'left'
-            },
-            {
-              title: '图标',
-              field: 'icon',
-              width: '100',
-              align: 'left'
+              width: 200,
+              align: 'center',
+              formatter: (item) => {
+                console.log('查看角色', item)
+                return '<a>'+item.name+'</a>'
+              }
             },
             {
               title: '链接',
               field: 'uri',
-              width: '200',
-              align: 'left'
+              width: 200,
+              align: 'center'
             },
             {
               title: '操作',
               type: 'action',
-              width: '350',
-              align: 'left',
+              width: 350,
+              align: 'center',
               actions: [
                 {
-                  text: '查看',
-                  onclik: this.onDetail
-                },{
+                  text: '查看角色',
+                  onclick: this.onDetail,
+                  formatter: (item) => {
+                    console.log('查看角色', item)
+                    return '<i>查看角色</i>'
+                  }
+                },
+                {
                   text: '编辑',
-                  onclik: this.onEdit
-                },{
-                  text: '添加',
-                  onclik: this.onAdd
-                },{
+                  onclick: this.onEdit,
+                  formatter: (item) => {
+                    console.log('编辑', item)
+                    return '<i>编辑</i>'
+                  }
+                },
+                {
+                  text: '新增',
+                  onclick: this.onAdd,
+                  formatter: (item) => {
+                    console.log('新增', item)
+                    return '<i>新增</i>'
+                  }
+                },
+                {
                   text: '删除',
-                  onclik: this.onDelete
+                  onclick: this.onDelete,
+                  formatter: (item) => {
+                    console.log('删除', item)
+                    return '<i>删除</i>'
+                  }
                 }
               ]
             },
@@ -95,19 +103,16 @@ export default {
                 "id":40,
                 "parent_id":0,
                 "order":0,
-                "name":"\u9996\u9875",
-                "icon":"",
-                "uri":"",
+                "name":"动物类",
+                "uri":"/masd/ds",
                 "open":true,
                 "lists":[]
               },{
                 "id":5,
                 "parent_id":0,
                 "order":1,
-                "name":"\u83dc\u5355",
-                "icon":"",
-                "uri":"",
-                "assign":1,
+                "name":"昆虫类",
+                "uri":"/masd/ds",
                 "open":true,
                 "lists":[
                   {
@@ -115,10 +120,17 @@ export default {
                     "parent_id":5,
                     "open":true,
                     "order":0,
-                    "name":"\u83dc\u5355\u7ba1\u7406",
-                    "icon":"",
-                    "uri":"\/menu\/menuManagement",
-                    "assign":1,
+                    "name":"蚂蚁",
+                    "uri":"/masd/ds",
+                    "lists":[]
+                  },
+                  {
+                    "id":13,
+                    "parent_id":5,
+                    "open":true,
+                    "order":1,
+                    "name":"蜜蜂",
+                    "uri":"/masd/ds",
                     "lists":[]
                   }
                 ]
@@ -127,11 +139,18 @@ export default {
                 "id":19,
                 "parent_id":0,
                 "order":2,
-                "name":"\u6743\u9650\u7ba1\u7406",
-                "icon":"",
-                "uri":"",
+                "name":"植物类",
+                "uri":"/masd/ds",
                 "open":true,
-                "assign":1,
+                "lists":[]
+              },
+              {
+                "id":20,
+                "parent_id":0,
+                "order":2,
+                "name":"细菌类",
+                "uri":"/masd/ds",
+                "open":true,
                 "lists":[]
               }
             ]
@@ -163,8 +182,7 @@ li {
   display: inline-block;
   margin: 0 10px;
 }
-
 a {
-  color: #42b983;
+  color: #409eff;
 }
 </style>

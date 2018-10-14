@@ -1,10 +1,10 @@
 {
-  "name": "vue-drag-tree-table",
+  "name": "drag-tree-table",
   "description": "基于Vue实现可以拖拽排序的树状表格",
-  "version": "1.0.4",
+  "version": "1.0.1",
   "author": "yangjinkai",
   "license": "MIT",
-  "main": "dist/index.js",
+  "main": "dist/dtree-table.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"

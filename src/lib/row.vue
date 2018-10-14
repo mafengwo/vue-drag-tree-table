@@ -7,29 +7,34 @@
                 :tree-p-id="model.parent_id"> 
                 <column
                     v-for="(subItem, subIndex) in columns"
+                    v-bind:class="'align-' + subItem.align"
                     :field="subItem.field"
                     :width="subItem.width"
                     :key="subIndex">
                     <span v-if="subItem.type === 'selection'">
-                        <space depth="0"/>
-                        <span 
-                            v-if = "model.lists && model.lists.length"
-                            v-bind:class="model.open ? 'el-icon-caret-bottom' : 'el-icon-caret-right'">
+                        <space :depth="depth"/>
+                        <span v-if = "model.lists && model.lists.length" class="zip-icon" v-bind:class="[model.open ? 'arrow-bottom' : 'arrow-right']">
                         </span>
-                        <span v-else class="el-icon-caret-bottom tree-icon-hidden"></span>
-                        <span class="filed-text">{{model[subItem.field]}}</span>
-                        
+                        <span v-else class="zip-icon arrow-transparent">
+                        </span>
+                        <i class="fa" v-bind:class="model.icon"></i>
+                        <span v-if="subItem.formatter" v-html="subItem.formatter(model)"></span>
+                        <span v-else v-html="model[subItem.field]"></span>
+
                     </span>
                     <span v-else-if="subItem.type === 'action'">
-                        <span class="action-btn"
+                        <a class="action-item"
                             v-for="(acItem, acIndex) in subItem.actions"
                             :key="acIndex"
                             type="text" size="small" 
-                            @click.stop.prevent="acItem.onclik(model)">
-                            {{acItem.text}}
-                        </span>
+                            @click.stop.prevent="acItem.onclick(model)">
+                            <i :class="acItem.icon" v-html="acItem.formatter(model)"></i>&nbsp;
+                        </a>
                     </span>
-                    <span v-else class="filed-text" >
+                    <span v-else-if="subItem.type === 'icon'">
+                         {{model[subItem.field]}}
+                    </span>
+                    <span v-else>
                         {{model[subItem.field]}}
                     </span>
                 </column>
@@ -111,6 +116,15 @@
       &:hover{
           background: #ecf5ff
       }
+      .align-left{
+          text-align: left;
+      }
+      .align-right{
+          text-align: right;
+      }
+      .align-center{
+          text-align: center;
+      }
     }
     .hover-model{
         position: absolute;
@@ -142,30 +156,29 @@
         height: 25%;
         background: #a0c8f7;
     }
-    .action-btn{
-        color: #409EFF;
-        font-size: 14px;
-        font-style: normal;
+    .action-item{
+        color: #409eff;
         cursor: pointer;
+        i{
+            font-style: normal;
+        }
     }
-    .filed-text{
-        vertical-align: middle;
-    }
-    .el-icon-caret-bottom{
+    .zip-icon{
         display: inline-block;
-        width: 24px;
-        height: 24px;
-        background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAACFElEQVRoQ+1WPYsTURQ9Z1gQQQhY2toIQdCtZiYqsdZKOwW19QeIyyKCoAj7A8R2Be20EWvR4t2pVkEGbGwthRBBIuy7MksWsmrWvHdflMU35XDPuefjvUmIA/7wgOtHNvCvG8wN5AaMCeQjZAzQDM8NmCM0EuQGjAGa4bkBc4RGgv+vgeFwuDKZTB4COA1gxRjgDpzktvf+3Xg8Xm/b9nsIZ3ADVVWtkewMJH9UdV1EgrhjDGySvJZcPQBV3RSRGyHcwQYGg8FZ7/0bksHY/YSpqgI4IyJuqQY68qqq7pK8F7Jogdk7zrkHC8ztGYlNkXVdvwRwIXThnPlXzrmLMVyxBtDv94/0er33AI7HLJ7BfBqNRqfatv0awxNtYHqUTgDYInk4ZrmqfgOwKiIfY/A7n+BY4C6uLMtLRVE8j+Hx3l9umuZFDHYXYzYwbWKD5K1AIRvOuduBmF/GkxgAUFRV9ZrkuUUEqepbETkPwC8yv99MKgPdp/UoyQ8Ajv1B1GdVPSkiX6zik9yBWRFlWa4WRdH9EB2aI27iva+bptlKIT65gel9uELy6e8EqupVEXmWSvxSDHSkdV0/AnBzVqiqPhaRPe9SGEl2B34S013q+ySvd3+5VfWJiKwB2E4hepZjWQZS65zLlw38tajnLMoN5AaMCeQjZAzQDM8NmCM0EuQGjAGa4bkBc4RGgtyAMUAz/AeK1okx6YB/WQAAAABJRU5ErkJggg==") no-repeat center;
-        background-size: cover;
+        width: 8px;
+        height: 8px;
         vertical-align: middle;
+        background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAf0lEQVQ4T7XT0Q2AMAhF0dvNdALdSEdzBB3BDXQD85LGRNMCauS7nAKBxMdIhfwemIAtYpeAEeiANoLUgAGYI4gFqAMX8QAXiQBCNFDNRBVdIgpUkSfADjT3KqLACmg/XrWw5J+Li+VVYCZrMBbgJluA+tXA3Hv45ZgiR3i+OQBeSyYRPEyeUAAAAABJRU5ErkJggg==') no-repeat center;
+        background-size: cover;
     }
-    .el-icon-caret-right{
-        display: inline-block;
-        width: 24px;
-        height: 24px;
-        background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAABqElEQVRoQ+2XvUoDURCFZ4KQZ/AN7ATTbFKl1UYrGysx2IithYiNP42PkHSp7AWtLOdmCQFBt7SztciCyBqyI4EVgijJ7skPAzf1PbvnO+fe3Fkm4z827p88wLIb9A34BsAE/BYCA4TlvgE4QvABvoFKpbJaLpebqvpBRJfOuWcw1FxyuIFqtdpi5oPRW1X1i5kbItLO5QJYPAuAHjNv/PLQ6vf7R1EUfQHeppLCALVa7YmI1v94W284HO6EYfg2lZOCi+YJMNpS78y8KyKPBf1NlM0VIDsXKTOfi8jVRDcFFswd4MeTqt6laboXhmFcwOe/koUBZA5eB4PBdrfbjWYFsWiA0bn4VNX9TqdzOwuIhQOMbakb59wJCrE0gMz4oYg0EYilAqjqvXNuyzLAg3Nu0ywAEdndQqpq8xBb/xu1e5GZHSVU1e4wZ32cNvNB44goGL+MVLUdx3HDxCdlEAQXpVLpLANIiOgYnW/y3MzwLFSv11eSJDklojVmvhaRlzwG0LUwAGoA1XsANEFU7xtAE0T1vgE0QVTvG0ATRPW+ATRBVG++gW/3mdcxxX/11wAAAABJRU5ErkJggg==") no-repeat center;
-        background-size: cover;
-        vertical-align: middle;
+    .arrow-transparent{
+        visibility: hidden;
+    }
+    .arrow-right{
+        
+    }
+    .arrow-bottom{
+        transform: rotate(90deg)
     }
     </style>
     

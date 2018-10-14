@@ -1,13 +1,12 @@
 # tree
 
-> A Vue.js project
+> 基于vue实现的可以拖拽排序的树形表格
 
 ## Build Setup
 
 ``` bash
 # install dependencies
-npm install
-
+npm i drag-tree-table --save-dev
 # serve with hot reload at localhost:8080
 npm run dev
 

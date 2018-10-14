@@ -7,7 +7,7 @@
 export default {
   name: 'column',
   props: {
-    width: String,
+    width: Number,
     field: String,
     label: String
   },
@@ -22,5 +22,6 @@ export default {
   .tree-column{
     padding: 0px 4px;
     min-width: 60px;
+    text-align: center;
   }
 </style>

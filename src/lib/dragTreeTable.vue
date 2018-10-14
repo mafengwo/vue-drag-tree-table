@@ -21,32 +21,18 @@
   import row from './row.vue'
   import column from './column.vue'
   import space from './space.vue'
-  function getElementLeft(element){
-　　　　var actualLeft = element.offsetLeft;
-　　　　var current = element.offsetParent;
-　　　　while (current !== null){
-　　　　　　actualLeft += current.offsetLeft;
-　　　　　　current = current.offsetParent;
-　　　　}
-　　　　return actualLeft;
-　　}
-　　function getElementTop(element){
-　　　　var actualTop = element.offsetTop;
-　　　　var current = element.offsetParent;
-　　　　while (current !== null){
-　　　　　　actualTop += current.offsetTop;
-　　　　　　current = current.offsetParent;
-　　　　}
-　　　　return actualTop;
-　}
+  
   export default {
-    name: "VueDragTreeTable",
+    name: "dragTreeTable",
     components: {
         row,
         column,
         space
     },
-    props: ['lists'],
+    props: {
+      lists: Object,
+      onDrag: Function
+    },
     data() {
       return {
         treeData: [],
@@ -58,17 +44,23 @@
       }
     },
     methods: {
-      onDetail(item) {
-        this.$bus.$emit('onDetail', item)
+      getElementLeft(element) {
+        var actualLeft = element.offsetLeft;
+        var current = element.offsetParent;
+        while (current !== null){
+          actualLeft += current.offsetLeft;
+          current = current.offsetParent;
+        }
+        return actualLeft
       },
-      onEdit(item) {
-        this.$bus.$emit('onEdit', item)
-      },
-      onDelete(item) {
-        this.$bus.$emit('onDelete', item)
-      },
-      onAdd(item) {
-          this.$bus.$emit('onAdd', item)
+      getElementTop(element) {
+        var actualTop = element.offsetTop;
+        var current = element.offsetParent;
+        while (current !== null) {
+          actualTop += current.offsetTop;
+          current = current.offsetParent;
+        }
+        return actualTop
       },
       draging(e) {
         if (e.pageX == this.dragX && e.pageY == this.dragY) return
@@ -76,7 +68,7 @@
         this.dragY = e.pageY
         this.filter(e.pageX, e.pageY)
       },
-      drop(e) {
+      drop() {
         this.clearHoverStatus()
         this.resetTreeData()
       },
@@ -86,8 +78,8 @@
         this.targetId = undefined
         for(let i=0; i < rows.length; i++) {
           const row = rows[i]
-          const rx = getElementLeft(row);
-          const ry = getElementTop(row);
+          const rx = this.getElementLeft(row);
+          const ry = this.getElementTop(row);
           const rw = row.clientWidth;
           const rh = row.clientHeight;
           if (x > rx && x < (rx + rw) && y > ry && y < (ry + rh)) {
@@ -131,7 +123,7 @@
         if (this.targetId === undefined) return 
         console.log(window.dragId, this.targetId, this.whereInsert)
         const newList = []
-        const curList = this.lists
+        const curList = this.lists.data
         const _this = this
         function pushData(curList, needPushList) {
           for( let i = 0; i < curList.length; i++) {
@@ -148,7 +140,7 @@
             }
            
             if (_this.targetId == item.id) {
-              const curDragItem = _this.getCurDragItem(_this.lists, window.dragId)
+              const curDragItem = _this.getCurDragItem(_this.lists.data, window.dragId)
               if (_this.whereInsert === 'top') {
                 curDragItem.parent_id = item.parent_id
                 needPushList.push(curDragItem)
@@ -160,22 +152,23 @@
                 needPushList.push(obj)
               } else {
                 curDragItem.parent_id = item.parent_id
-                needPushList.push(curDragItem)
                 needPushList.push(obj)
+                needPushList.push(curDragItem)
+                
               }
             } else {
-              if (dragId != item.id)
+              if (window.dragId != item.id)
                 needPushList.push(obj)
             }
             
-            if (item.lists.length) {
+            if (item.lists && item.lists.length) {
               pushData(item.lists, obj.lists)
             }
           }
         }
         pushData(curList, newList)
+        this.onDrag(newList)
         console.log(newList)
-        this.$emit('onChange', newList)
       },
       deepClone (obj) {
         var newobj = obj.constructor === Array ? [] : {};
@@ -195,9 +188,9 @@
           for( let i = 0; i < curList.length; i++) {
             var item = curList[i]
             if (item.id == id) {
-              curItem = _this.deepClone(item)
+              curItem = JSON.parse(JSON.stringify(item))
               break
-            } else if (item.lists.length) {
+            } else if (item.lists && item.lists.length) {
               getchild(item.lists)
             }
           }
@@ -209,10 +202,11 @@
   }
 </script>
 
-<style>
+<style lang="scss">
 .drag-tree-table{
   margin: 20px 0;
   color: #606266;
+  font-size: 12px;
 }
 .drag-tree-table-header{
   display: flex;

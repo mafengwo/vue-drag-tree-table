@@ -1,6 +1,6 @@
 <template>
   <span class="space-container">
-    <span class="space" v-for="(item, index) in spaces" v-bind:key="index">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <span class="space" v-for="(item, index) in spaces" v-bind:key="index"></span>
   </span>
   
 </template>
@@ -21,9 +21,9 @@ export default {
 </script>
 <style>
 .space-container{
-
 }
 .space{
-  display: inline-block
+  display: inline-block;
+  width: 30px;
 }
 </style>

@@ -1,4 +1,4 @@
-import VueDragTreeTable from './vueDragTreeTable.vue'
-VueDragTreeTable.install = Vue => Vue.component(VueDragTreeTable.name, VueDragTreeTable);
+import DragTreeTable from './dragTreeTable.vue'
+DragTreeTable.install = Vue => Vue.component(DragTreeTable.name, DragTreeTable);
 
-export default VueDragTreeTable
+export default DragTreeTable
