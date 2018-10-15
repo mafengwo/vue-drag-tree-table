@@ -17,7 +17,6 @@
                         </span>
                         <span v-else class="zip-icon arrow-transparent">
                         </span>
-                        <i class="fa" v-bind:class="model.icon"></i>
                         <span v-if="subItem.formatter" v-html="subItem.formatter(model)"></span>
                         <span v-else v-html="model[subItem.field]"></span>
 

@@ -5,7 +5,7 @@ const NODE_ENV = process.env.NODE_ENV
 
 module.exports = {
   // 修改打包入口
-  entry: process.env.NODE_ENV === 'production'
+  entry: NODE_ENV === 'production'
   ? './src/lib/index.js' // 生产模式下导入文件
   : './src/main.js', // 开发模式下导入文件
   output: {

@@ -28,12 +28,6 @@ export default {
       },
       onDetail(item){
         console.log('详情', item)
-      },
-      onDelete(item) {
-        console.log('删除', item)
-      },
-      onAdd(item){
-        console.log('添加', item)
       }
   },
   mounted() {
@@ -75,22 +69,6 @@ export default {
                   formatter: (item) => {
                     console.log('编辑', item)
                     return '<i>编辑</i>'
-                  }
-                },
-                {
-                  text: '新增',
-                  onclick: this.onAdd,
-                  formatter: (item) => {
-                    console.log('新增', item)
-                    return '<i>新增</i>'
-                  }
-                },
-                {
-                  text: '删除',
-                  onclick: this.onDelete,
-                  formatter: (item) => {
-                    console.log('删除', item)
-                    return '<i>删除</i>'
                   }
                 }
               ]

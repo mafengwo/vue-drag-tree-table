@@ -20,8 +20,6 @@ export default {
 }
 </script>
 <style>
-.space-container{
-}
 .space{
   display: inline-block;
   width: 30px;
