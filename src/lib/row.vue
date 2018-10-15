@@ -1,5 +1,5 @@
 <template>
-        <div class="tree-block" draggable @dragstart="dragstart($event)"
+        <div class="tree-block" draggable="true" @dragstart="dragstart($event)"
             @dragend="dragend($event)">
             <div class="tree-row" 
                 @click="toggle" 
@@ -89,6 +89,7 @@
                 }
             },
             dragstart(e) {
+                e.dataTransfer.setData('Text', this.id);
                 window.dragId = e.target.children[0].getAttribute('tree-id')
                 e.target.style.opacity = 0.2
             },
@@ -179,5 +180,8 @@
     .arrow-bottom{
         transform: rotate(90deg)
     }
+    [draggable=true] {
+  -khtml-user-drag: element;
+}
     </style>
     

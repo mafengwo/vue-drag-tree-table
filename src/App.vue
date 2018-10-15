@@ -1,10 +1,11 @@
 <template>
   <div id="app">
-  <dragTreeTable :lists="treeData" :onDrag="onTreeDataChange"></dragTreeTable>
+  <dragTreeTable :data="treeData" :onDrag="onTreeDataChange"></dragTreeTable>
   </div>
 </template>
 
 <script>
+
 import dragTreeTable from './lib/dragTreeTable.vue';
 export default {
   name: 'app',
@@ -12,7 +13,7 @@ export default {
     return {
       treeData: {
         columns: [],
-        data: []
+        lists: []
       }
     }
   },
@@ -21,7 +22,7 @@ export default {
   },
   methods: {
     onTreeDataChange(list) {
-      this.treeData.data = list
+      this.treeData.lists = list
     },
     onEdit(item) {
         console.log('编辑', item)
@@ -40,7 +41,7 @@ export default {
               align: 'center',
               formatter: (item) => {
                 console.log('查看角色', item)
-                return '<a>'+item.name+'</a>'
+                return '<span>'+item.name+'</span>'
               }
             },
             {
@@ -76,7 +77,7 @@ export default {
           ]
           this.treeData = {
             columns: columns,
-            data: [
+            lists: [
               {
                 "id":40,
                 "parent_id":0,

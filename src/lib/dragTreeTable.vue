@@ -2,15 +2,15 @@
     <div class="drag-tree-table">
         <div class="drag-tree-table-header">
           <column
-            v-for="(item, index) in lists.columns"
+            v-for="(item, index) in data.columns"
             :width="item.width"
             :key="index" >
             {{item.title}}
           </column>
         </div>
         <div class="drag-tree-table-body" @dragover="draging" @dragend="drop">
-          <row depth="0" :columns="lists.columns"
-            :model="item" v-for="(item, index) in lists.data" :key="index">
+          <row depth="0" :columns="data.columns"
+            :model="item" v-for="(item, index) in data.lists" :key="index">
         </row>
         </div>
         
@@ -21,7 +21,10 @@
   import row from './row.vue'
   import column from './column.vue'
   import space from './space.vue'
-  
+  document.body.ondrop = function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
   export default {
     name: "dragTreeTable",
     components: {
@@ -30,7 +33,7 @@
         space
     },
     props: {
-      lists: Object,
+      data: Object,
       onDrag: Function
     },
     data() {
@@ -68,7 +71,9 @@
         this.dragY = e.pageY
         this.filter(e.pageX, e.pageY)
       },
-      drop() {
+      drop(event) {
+        event.preventDefault();
+        event.stopPropagation();
         this.clearHoverStatus()
         this.resetTreeData()
       },
@@ -88,16 +93,16 @@
             hoverBlock.style.display = 'block'
             const targetId = row.getAttribute('tree-id')
             if (targetId == window.dragId){
-              console.log('-------------')
               this.targetId = undefined
               return
             }
             this.targetId = targetId
             let whereInsert = ''
-            if (diffY/53 > 3/4) {
+            var rowHeight = document.getElementsByClassName('tree-row')[0].clientHeight
+            if (diffY/rowHeight > 3/4) {
               hoverBlock.children[2].style.opacity = 0.5
               whereInsert = 'bottom'
-            } else if (diffY/53 > 1/4) {
+            } else if (diffY/rowHeight > 1/4) {
               hoverBlock.children[1].style.opacity = 0.5
               whereInsert = 'center'
             } else {
@@ -121,40 +126,28 @@
       },
       resetTreeData() {
         if (this.targetId === undefined) return 
-        console.log(window.dragId, this.targetId, this.whereInsert)
         const newList = []
-        const curList = this.lists.data
+        const curList = this.data.lists
         const _this = this
         function pushData(curList, needPushList) {
           for( let i = 0; i < curList.length; i++) {
             const item = curList[i]
-            var obj = {
-              "id": item.id,
-              "parent_id": item.parent_id,
-              "order": item.order,
-              "name": item.name,
-              "icon": item.icon,
-              "uri": item.uri,
-              "open": item.open,
-              "lists": []
-            }
-           
+            var obj = _this.deepClone(item)
+            obj.lists = []
             if (_this.targetId == item.id) {
-              const curDragItem = _this.getCurDragItem(_this.lists.data, window.dragId)
+              const curDragItem = _this.getCurDragItem(_this.data.lists, window.dragId)
               if (_this.whereInsert === 'top') {
                 curDragItem.parent_id = item.parent_id
                 needPushList.push(curDragItem)
                 needPushList.push(obj)
               } else if (_this.whereInsert === 'center'){
                 curDragItem.parent_id = item.id
-                console.log(11)
                 obj.lists.push(curDragItem)
                 needPushList.push(obj)
               } else {
                 curDragItem.parent_id = item.parent_id
                 needPushList.push(obj)
                 needPushList.push(curDragItem)
-                
               }
             } else {
               if (window.dragId != item.id)
@@ -168,7 +161,6 @@
         }
         pushData(curList, newList)
         this.onDrag(newList)
-        console.log(newList)
       },
       deepClone (obj) {
         var newobj = obj.constructor === Array ? [] : {};
