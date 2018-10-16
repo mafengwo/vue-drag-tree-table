@@ -11,7 +11,6 @@
 npm i drag-tree-table --save-dev
 # serve with hot reload at localhost:8080
 npm run dev
-
 # build for production with minification
 npm run build
 ```
@@ -35,9 +34,9 @@ import dragTreeTable from 'drag-tree-table'
 ---|:--:|---:
 id|String|唯一标志
 parent_id|String|父节点ID
-order|Number|排序，0开始，onDrag后order会重置
-name|String|默认显示内容
-open|Boolean|true展开，false收起
+order|Number|排序,0开始,onDrag后order会重置
+name|String|默认显示内容
+open|Boolean|true展开,false收起
 lists|Array|子节点
 
  > lists 配置示例
