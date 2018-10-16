@@ -77,62 +77,7 @@ export default {
           ]
           this.treeData = {
             columns: columns,
-            lists: [
-              {
-                "id":40,
-                "parent_id":0,
-                "order":0,
-                "name":"动物类",
-                "uri":"/masd/ds",
-                "open":true,
-                "lists":[]
-              },{
-                "id":5,
-                "parent_id":0,
-                "order":1,
-                "name":"昆虫类",
-                "uri":"/masd/ds",
-                "open":true,
-                "lists":[
-                  {
-                    "id":12,
-                    "parent_id":5,
-                    "open":true,
-                    "order":0,
-                    "name":"蚂蚁",
-                    "uri":"/masd/ds",
-                    "lists":[]
-                  },
-                  {
-                    "id":13,
-                    "parent_id":5,
-                    "open":true,
-                    "order":1,
-                    "name":"蜜蜂",
-                    "uri":"/masd/ds",
-                    "lists":[]
-                  }
-                ]
-              },
-              {
-                "id":19,
-                "parent_id":0,
-                "order":2,
-                "name":"植物类",
-                "uri":"/masd/ds",
-                "open":true,
-                "lists":[]
-              },
-              {
-                "id":20,
-                "parent_id":0,
-                "order":2,
-                "name":"细菌类",
-                "uri":"/masd/ds",
-                "open":true,
-                "lists":[]
-              }
-            ]
+            lists: [{"id":1,"parent_id":0,"order":0,"name":"\u9996\u9875","icon":"fa-bars","flag":"","uri":"\/dashboard","assign":1,"lists":[]},{"id":7,"parent_id":0,"order":0,"name":"\u6d4b\u8bd5\u83dc\u535501","icon":"fa-address-book-o","flag":"","uri":"","assign":1,"lists":[{"id":10,"parent_id":7,"order":0,"name":"\u6d4b\u8bd5\u83dc\u535501-01","icon":"fa-bandcamp","flag":"test01.01","uri":"","assign":1,"lists":[]}]},{"id":2,"parent_id":0,"order":1,"name":"\u6743\u9650\u83dc\u5355","icon":"fa-lock","flag":"","uri":"","assign":1,"lists":[{"id":3,"parent_id":2,"order":0,"name":"\u540e\u53f0\u7528\u6237","icon":"fa-user","flag":"rbac.userManagement","uri":"\/rbac\/userManagement","assign":1,"lists":[]},{"id":4,"parent_id":2,"order":1,"name":"\u89d2\u8272\u7ba1\u7406","icon":"fa-users","flag":"rbac.roleManagement.role.get","uri":"\/rbac\/roleManagement","assign":1,"lists":[]},{"id":5,"parent_id":2,"order":2,"name":"\u6743\u9650\u7ba1\u7406","icon":"fa-ban","flag":"rbac.authorityManagement","uri":"\/rbac\/authorityManagement","assign":1,"lists":[]},{"id":6,"parent_id":2,"order":3,"name":"\u83dc\u5355\u7ba1\u7406","icon":"fa-bars","flag":"menu.menuManagement","uri":"\/menu\/menuManagement","assign":1,"lists":[]}]}]
           }
   }
 }

@@ -72,13 +72,10 @@
         this.filter(e.pageX, e.pageY)
       },
       drop(event) {
-        event.preventDefault();
-        event.stopPropagation();
         this.clearHoverStatus()
         this.resetTreeData()
       },
       filter(x,y) {
-        this.clearHoverStatus()
         var rows = document.querySelectorAll('.tree-row')
         this.targetId = undefined
         for(let i=0; i < rows.length; i++) {
@@ -100,13 +97,23 @@
             let whereInsert = ''
             var rowHeight = document.getElementsByClassName('tree-row')[0].clientHeight
             if (diffY/rowHeight > 3/4) {
-              hoverBlock.children[2].style.opacity = 0.5
+              console.log(111, hoverBlock.children[2].style)
+              if (hoverBlock.children[2].style.opacity !== '0.5') {
+                this.clearHoverStatus()
+                hoverBlock.children[2].style.opacity = 0.5
+              }
               whereInsert = 'bottom'
             } else if (diffY/rowHeight > 1/4) {
-              hoverBlock.children[1].style.opacity = 0.5
+              if (hoverBlock.children[1].style.opacity !== '0.5') {
+                this.clearHoverStatus()
+                hoverBlock.children[1].style.opacity = 0.5
+              }
               whereInsert = 'center'
             } else {
-              hoverBlock.children[0].style.opacity = 0.5
+              if (hoverBlock.children[0].style.opacity !== '0.5') {
+                this.clearHoverStatus()
+                hoverBlock.children[0].style.opacity = 0.5
+              }
               whereInsert = 'top'
             }
             this.whereInsert = whereInsert
@@ -162,16 +169,17 @@
         pushData(curList, newList)
         this.onDrag(newList)
       },
-      deepClone (obj) {
-        var newobj = obj.constructor === Array ? [] : {};
-        if(typeof obj !== 'object'){
-            return;
+      deepClone (aObject) {
+        if (!aObject) {
+          return aObject;
         }
-        for(var i in obj){
-           newobj[i] = typeof obj[i] === 'object' ?
-           this.deepClone(obj[i]) : obj[i];
+        var bObject, v, k;
+        bObject = Array.isArray(aObject) ? [] : {};
+        for (k in aObject) {
+          v = aObject[k];
+          bObject[k] = (typeof v === "object") ? this.deepClone(v) : v;
         }
-        return newobj
+        return bObject;
       },
       getCurDragItem(lists, id) {
         var curItem = null
