@@ -212,9 +212,9 @@
   display: flex;
   padding: 15px 10px;
   background: #f5f7fa;
-  height: 36px;
+  height: 66px;
   line-height: 36px;
-  box-sizing: content-box;
+  box-sizing: border-box;
   font-weight: 600;
 }
 .tree-icon-hidden{
