@@ -2,6 +2,8 @@
 
 > 基于vue实现的可以拖拽排序的树形表格 [star传送门](https://github.com/ColdDay/vue-drag-tree-table "vue-drag-tree-table")
 
+> 实现思路见博客[被风吹雪的博客](https://www.cnblogs.com/bfgis/p/9805928.html "vue-drag-tree-table")
+
 ![drag-tree-table](./imgs/demo.gif 'drag-tree-table')
 
 ## Build Setup
