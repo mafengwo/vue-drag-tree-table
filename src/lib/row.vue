@@ -30,9 +30,6 @@
                             <i :class="acItem.icon" v-html="acItem.formatter(model)"></i>&nbsp;
                         </a>
                     </span>
-                    <span v-else-if="subItem.type === 'icon'">
-                         {{model[subItem.field]}}
-                    </span>
                     <span v-else>
                         {{model[subItem.field]}}
                     </span>
