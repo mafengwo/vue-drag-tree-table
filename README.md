@@ -29,6 +29,10 @@ import dragTreeTable from 'drag-tree-table'
    lists: [],
    columns: []
  }
+ // methods
+ onTreeDataChange(list) {
+  this.treeData.lists = list
+ },
  ```
  > 数据源（lists）配置   
 
