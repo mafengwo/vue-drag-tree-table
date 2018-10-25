@@ -22,14 +22,15 @@ export default {
   },
   methods: {
     onTreeDataChange(list) {
+      console.log(list)
       this.treeData.lists = list
     },
     onEdit(item) {
-        console.log('编辑', item)
-      },
-      onDetail(item){
-        console.log('详情', item)
-      }
+      console.log('编辑', item)
+    },
+    onDetail(item){
+      console.log('详情', item)
+    }
   },
   mounted() {
     var columns = [
@@ -40,7 +41,6 @@ export default {
                       width: 200,
                       align: 'center',
                       formatter: (item) => {
-                        console.log('查看角色', item)
                         return '<span>'+item.name+'</span>'
                       }
                     },
@@ -57,10 +57,9 @@ export default {
                       align: 'center',
                       actions: [
                         {
-                          text: '查看角色',
+                          text: '查看角s色',
                           onclick: this.onDetail,
                           formatter: (item) => {
-                            console.log('查看角色', item)
                             return '<i>查看角色</i>'
                           }
                         },
@@ -68,7 +67,6 @@ export default {
                           text: '编辑',
                           onclick: this.onEdit,
                           formatter: (item) => {
-                            console.log('编辑', item)
                             return '<i>编辑</i>'
                           }
                         }
@@ -100,6 +98,15 @@ export default {
                    "open":true,
                    "order":0,
                    "name":"蚂蚁",
+                   "uri":"/masd/ds",
+                   "lists":[]
+                 },
+                 {
+                   "id":13,
+                   "parent_id":5,
+                   "open":true,
+                   "order":0,
+                   "name":"蜜蜂",
                    "uri":"/masd/ds",
                    "lists":[]
                  }

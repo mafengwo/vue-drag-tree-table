@@ -78,6 +78,14 @@
       filter(x,y) {
         var rows = document.querySelectorAll('.tree-row')
         this.targetId = undefined
+        const dragOriginElementTop = this.getElementTop(dragParentNode)
+        const dragOriginElementLeft = this.getElementLeft(dragParentNode)
+        const dragW = dragOriginElementLeft + dragParentNode.clientWidth
+        const dragH = dragOriginElementTop + dragParentNode.clientHeight
+        if (x >= dragOriginElementLeft && x <= dragW && y >= dragOriginElementTop && y <= dragH) {
+          // 当前正在拖拽原始块不允许插入
+          return
+        }
         for(let i=0; i < rows.length; i++) {
           const row = rows[i]
           const rx = this.getElementLeft(row);
@@ -89,15 +97,10 @@
             const hoverBlock = row.children[row.children.length - 1]
             hoverBlock.style.display = 'block'
             const targetId = row.getAttribute('tree-id')
-            if (targetId == window.dragId){
-              this.targetId = undefined
-              return
-            }
             this.targetId = targetId
             let whereInsert = ''
             var rowHeight = document.getElementsByClassName('tree-row')[0].clientHeight
             if (diffY/rowHeight > 3/4) {
-              console.log(111, hoverBlock.children[2].style)
               if (hoverBlock.children[2].style.opacity !== '0.5') {
                 this.clearHoverStatus()
                 hoverBlock.children[2].style.opacity = 0.5
@@ -137,6 +140,7 @@
         const curList = this.data.lists
         const _this = this
         function pushData(curList, needPushList) {
+          let order = 0
           for( let i = 0; i < curList.length; i++) {
             const item = curList[i]
             var obj = _this.deepClone(item)
@@ -145,22 +149,30 @@
               const curDragItem = _this.getCurDragItem(_this.data.lists, window.dragId)
               if (_this.whereInsert === 'top') {
                 curDragItem.parent_id = item.parent_id
+                curDragItem.order = order
                 needPushList.push(curDragItem)
+                order = order + 1
+                obj.order = order
                 needPushList.push(obj)
               } else if (_this.whereInsert === 'center'){
                 curDragItem.parent_id = item.id
+                curDragItem.order = 0
                 obj.lists.push(curDragItem)
                 needPushList.push(obj)
               } else {
+                order = order + 1
+                obj.order = order
                 curDragItem.parent_id = item.parent_id
                 needPushList.push(obj)
                 needPushList.push(curDragItem)
               }
             } else {
-              if (window.dragId != item.id)
+              if (window.dragId != item.id){
+                obj.order = order
                 needPushList.push(obj)
+              }
             }
-            
+            order = needPushList.length
             if (item.lists && item.lists.length) {
               pushData(item.lists, obj.lists)
             }

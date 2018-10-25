@@ -88,6 +88,7 @@
             dragstart(e) {
                 e.dataTransfer.setData('Text', this.id);
                 window.dragId = e.target.children[0].getAttribute('tree-id')
+                window.dragParentNode = e.target
                 e.target.style.opacity = 0.2
             },
             dragend(e) {
