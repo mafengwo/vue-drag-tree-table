@@ -86,7 +86,10 @@
                 }
             },
             dragstart(e) {
-                e.dataTransfer.setData('Text', this.id);
+                if (navigator.userAgent.indexOf('Firefox') >= 0) {
+                    // Firefox drag have a bug
+                    e.dataTransfer.setData('Text', this.id);
+                }
                 window.dragId = e.target.children[0].getAttribute('tree-id')
                 window.dragParentNode = e.target
                 e.target.style.opacity = 0.2
