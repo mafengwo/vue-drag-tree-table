@@ -39,7 +39,7 @@ export default {
                       title: '菜单名称',
                       field: 'name',
                       width: 200,
-                      align: 'center',
+                      align: 'left',
                       formatter: (item) => {
                         return '<span>'+item.name+'</span>'
                       }
@@ -57,7 +57,7 @@ export default {
                       align: 'center',
                       actions: [
                         {
-                          text: '查看角s色',
+                          text: '查看角色',
                           onclick: this.onDetail,
                           formatter: (item) => {
                             return '<i>查看角色</i>'

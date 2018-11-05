@@ -22,6 +22,6 @@ export default {
 <style>
 .space{
   display: inline-block;
-  width: 30px;
+  width: 15px;
 }
 </style>

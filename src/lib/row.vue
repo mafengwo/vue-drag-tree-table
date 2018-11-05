@@ -31,7 +31,8 @@
                         </a>
                     </span>
                     <span v-else>
-                        {{model[subItem.field]}}
+                        <span v-if="subItem.formatter" v-html="subItem.formatter(model)"></span>
+                        <span v-else>{{model[subItem.field]}}</span>
                     </span>
                 </column>
                 <div class="hover-model" style="display: none">
