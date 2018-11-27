@@ -48,7 +48,8 @@ export default {
                       title: '链接',
                       field: 'uri',
                       width: 200,
-                      align: 'center'
+                      align: 'center',
+                      flex: 1
                     },
                     {
                       title: '操作',

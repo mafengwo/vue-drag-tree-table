@@ -4,6 +4,7 @@
           <column
             v-for="(item, index) in data.columns"
             :width="item.width"
+            :flex="item.flex"
             :key="index" >
             {{item.title}}
           </column>

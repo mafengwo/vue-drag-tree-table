@@ -1,6 +1,9 @@
 <template>
-    <div class="tree-column" v-bind:style="{ width: width + 'px'}">
-        <slot></slot>
+    <div class="tree-column" v-bind:style="{ width: width + 'px', flex: flex}" v-if="flex">
+      <slot></slot>
+    </div>
+    <div class="tree-column" v-bind:style="{ width: width + 'px'}" v-else>
+      <slot></slot>
     </div>
 </template>
 <script>
@@ -9,7 +12,8 @@ export default {
   props: {
     width: Number,
     field: String,
-    label: String
+    label: String,
+    flex: Number
   },
   data() {
       return {

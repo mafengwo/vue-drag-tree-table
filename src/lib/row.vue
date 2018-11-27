@@ -10,6 +10,7 @@
                     v-bind:class="'align-' + subItem.align"
                     :field="subItem.field"
                     :width="subItem.width"
+                    :flex="subItem.flex"
                     :key="subIndex">
                     <span v-if="subItem.type === 'selection'">
                         <space :depth="depth"/>
