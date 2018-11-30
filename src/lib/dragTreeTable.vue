@@ -100,8 +100,8 @@
             const targetId = row.getAttribute('tree-id')
             this.targetId = targetId
             let whereInsert = ''
-            var rowHeight = document.getElementsByClassName('tree-row')[0].clientHeight
-            if (diffY/rowHeight > 3/4) {
+            var rowHeight = row.offsetHeight
+              if (diffY/rowHeight > 3/4) {
               if (hoverBlock.children[2].style.opacity !== '0.5') {
                 this.clearHoverStatus()
                 hoverBlock.children[2].style.opacity = 0.5
@@ -141,7 +141,6 @@
         const curList = this.data.lists
         const _this = this
         function pushData(curList, needPushList) {
-          let order = 0
           for( let i = 0; i < curList.length; i++) {
             const item = curList[i]
             var obj = _this.deepClone(item)
@@ -150,38 +149,39 @@
               const curDragItem = _this.getCurDragItem(_this.data.lists, window.dragId)
               if (_this.whereInsert === 'top') {
                 curDragItem.parent_id = item.parent_id
-                curDragItem.order = order
                 needPushList.push(curDragItem)
-                order = order + 1
-                obj.order = order
                 needPushList.push(obj)
               } else if (_this.whereInsert === 'center'){
                 curDragItem.parent_id = item.id
-                curDragItem.order = 0
                 obj.lists.push(curDragItem)
                 needPushList.push(obj)
               } else {
-                order = order + 1
-                obj.order = order
                 curDragItem.parent_id = item.parent_id
                 needPushList.push(obj)
                 needPushList.push(curDragItem)
               }
             } else {
               if (window.dragId != item.id){
-                obj.order = order
                 needPushList.push(obj)
               }
             }
-            order = needPushList.length
             if (item.lists && item.lists.length) {
               pushData(item.lists, obj.lists)
             }
           }
         }
         pushData(curList, newList)
+          this.resetOrder(newList)
         this.onDrag(newList)
       },
+        resetOrder(list) {
+          for (var i = 0; i< list.length; i++) {
+              list[i].order = i;
+              if (list[i].lists.length) {
+                  this.resetOrder(list[i].lists)
+              }
+          }
+        },
       deepClone (aObject) {
         if (!aObject) {
           return aObject;
