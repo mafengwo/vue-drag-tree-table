@@ -177,7 +177,7 @@
         resetOrder(list) {
           for (var i = 0; i< list.length; i++) {
               list[i].order = i;
-              if (list[i].lists.length) {
+              if (list[i].lists && list[i].lists.length) {
                   this.resetOrder(list[i].lists)
               }
           }
