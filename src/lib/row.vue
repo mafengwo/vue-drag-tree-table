@@ -1,7 +1,7 @@
 <template>
         <div class="tree-block" draggable="true" @dragstart="dragstart($event)"
             @dragend="dragend($event)">
-            <div class="tree-row" 
+            <div class="tree-row"
                 @click="toggle" 
                 :tree-id="model.id"
                 :tree-p-id="model.parent_id"> 

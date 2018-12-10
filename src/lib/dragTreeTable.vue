@@ -9,7 +9,7 @@
             {{item.title}}
           </column>
         </div>
-        <div class="drag-tree-table-body" @dragover="draging" @dragend="drop">
+        <div class="drag-tree-table-body" @dragover="draging" @dragend="drop"  :class="isDraing ? 'is-draging' : '' ">
           <row depth="0" :columns="data.columns"
             :model="item" v-for="(item, index) in data.lists" :key="index">
         </row>
@@ -44,7 +44,8 @@
         dragY: 0,
         dragId: '',
         targetId: '',
-        whereInsert: ''
+        whereInsert: '',
+        isDraing: false
       }
     },
     methods: {
@@ -67,14 +68,22 @@
         return actualTop
       },
       draging(e) {
+        this.isDraing = true;
         if (e.pageX == this.dragX && e.pageY == this.dragY) return
         this.dragX = e.pageX
         this.dragY = e.pageY
         this.filter(e.pageX, e.pageY)
+        console.log(1)
+        if (e.clientY < 100) {
+          window.scrollTo(0, scrollY - 6)
+        } else if (e.clientY > (document.body.clientHeight - 160)) {
+          window.scrollTo(0, scrollY + 6)
+        }
       },
       drop(event) {
         this.clearHoverStatus()
         this.resetTreeData()
+       this.isDraing = false;
       },
       filter(x,y) {
         var rows = document.querySelectorAll('.tree-row')
@@ -232,5 +241,8 @@
 }
 .tree-icon-hidden{
   visibility: hidden;
+}
+.is-draging .tree-row:hover{
+  background: transparent !important;
 }
 </style>
