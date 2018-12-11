@@ -1,4 +1,4 @@
-# vue drag tree tabl
+# vue drag tree table
 IE10+/Chrome/firefox
 > 基于vue实现的可以拖拽排序的树形表格 [star传送门](https://github.com/ColdDay/vue-drag-tree-table "vue-drag-tree-table")，[npm](https://www.npmjs.com/package/drag-tree-table "vue-drag-tree-table")   
 
