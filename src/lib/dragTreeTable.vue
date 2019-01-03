@@ -1,5 +1,5 @@
 <template>
-    <div class="drag-tree-table">
+    <div class="drag-tree-table" ref="table">
         <div class="drag-tree-table-header">
           <column
             v-for="(item, index) in data.columns"
@@ -59,11 +59,13 @@
         return actualLeft
       },
       getElementTop(element) {
-        var actualTop = element.offsetTop;
+        // 如果表格在容器中滚动，需要做特殊计算
+        let scrollTop = this.$refs.table.parentElement.scrollTop
+        var actualTop = element.offsetTop - scrollTop;
         var current = element.offsetParent;
         while (current !== null) {
-          actualTop += current.offsetTop;
-          current = current.offsetParent;
+        actualTop += current.offsetTop;
+        current = current.offsetParent;
         }
         return actualTop
       },
@@ -73,7 +75,6 @@
         this.dragX = e.pageX
         this.dragY = e.pageY
         this.filter(e.pageX, e.pageY)
-        console.log(1)
         if (e.clientY < 100) {
           window.scrollTo(0, scrollY - 6)
         } else if (e.clientY > (document.body.clientHeight - 160)) {

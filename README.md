@@ -93,6 +93,7 @@ type|'selection', 'actions'|selection会显示折叠图标，actions指操作栏
 title|String|表格标题
 field|String|单元格内容取值使用
 width|Number|单元格宽度
+flex|Number|自动填充空余区域，遵循CSS的flex布局
 align|left,center,right|单元格对齐方式，默认局左对齐
 formatter|Function|自定义单元格显示内容,参数为当前行数据
  > columns 配置示例
