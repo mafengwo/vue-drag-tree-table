@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-  <dragTreeTable :data="treeData" :onDrag="onTreeDataChange"></dragTreeTable>
+  <dragTreeTable :data="treeData" :onDrag="onTreeDataChange" :isdraggable="false"></dragTreeTable>
   </div>
 </template>
 
@@ -61,7 +61,7 @@ export default {
                           text: '查看角色',
                           onclick: this.onDetail,
                           formatter: (item) => {
-                            return '<i>查看角色</i>'
+                            return '<i>查看角色 </i>'
                           }
                         },
                         {

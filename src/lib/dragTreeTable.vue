@@ -10,7 +10,7 @@
           </column>
         </div>
         <div class="drag-tree-table-body" @dragover="draging" @dragend="drop"  :class="isDraing ? 'is-draging' : '' ">
-          <row depth="0" :columns="data.columns"
+          <row depth="0" :columns="data.columns" :isdraggable="isdraggable"
             :model="item" v-for="(item, index) in data.lists" :key="index">
         </row>
         </div>
@@ -34,6 +34,10 @@
         space
     },
     props: {
+      isdraggable: {
+        type: Boolean,
+        default: true
+      },
       data: Object,
       onDrag: Function
     },

@@ -1,5 +1,5 @@
 <template>
-        <div class="tree-block" draggable="true" @dragstart="dragstart($event)"
+        <div class="tree-block" :draggable="!!isdraggable" @dragstart="dragstart($event)"
             @dragend="dragend($event)">
             <div class="tree-row"
                 @click="toggle" 
@@ -28,7 +28,7 @@
                             :key="acIndex"
                             type="text" size="small" 
                             @click.stop.prevent="acItem.onclick(model)">
-                            <i :class="acItem.icon" v-html="acItem.formatter(model)"></i>&nbsp;
+                            <i :class="acItem.icon" v-html="acItem.formatter(model)"></i>
                         </a>
                     </span>
                     <span v-else>
@@ -54,6 +54,7 @@
                 :model="item"
                 :columns="columns"
                 :key="index" 
+                :isdraggable="isdraggable"
                 :depth="depth * 1 + 1"
                 v-if="isFolder">
             </row>
@@ -65,7 +66,7 @@
     import space from './space.vue'
     export default {
       name: 'row',
-        props: ['model','depth','columns'],
+        props: ['model','depth','columns','isdraggable'],
         data() {
             return {
                 open: false,
@@ -102,6 +103,7 @@
             }
         },
         mounted() {
+            console.log(33333, this.isdraggable)
         }
     }
     </script>
