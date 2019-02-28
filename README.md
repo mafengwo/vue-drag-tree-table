@@ -20,7 +20,7 @@ npm run build
 import dragTreeTable from 'drag-tree-table'
 ```
 ```html
-<dragTreeTable :data="treeData" :onDrag="onTreeDataChange"></dragTreeTable>
+<dragTreeTable :data="treeData" :onDrag="onTreeDataChange" :isdraggable="true"></dragTreeTable>
  ```
  ```javascript
  treeData: {
@@ -32,6 +32,8 @@ import dragTreeTable from 'drag-tree-table'
   this.treeData.lists = list
  },
  ```
+ > isdraggable:默认true，如不想拖拽可手动添加
+ 
  > 数据源（lists）配置   
 
 参数|可选值|描述
