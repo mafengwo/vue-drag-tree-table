@@ -2,13 +2,11 @@
 IE10+/Chrome/firefox
 > 基于vue实现的可以拖拽排序的树形表格，[npm](https://www.npmjs.com/package/drag-tree-table "vue-drag-tree-table")   
 
-[DEMO链接](https://mafengwo.github.io/vue-drag-tree-table/index.html "vue-drag-tree-table")
-
 ![drag-tree-table](./imgs/demo.gif 'drag-tree-table')
 
 ## Build Setup
 
-``` bash
+``` bashs
 # install dependencies
 npm i drag-tree-table --save-dev
 # serve with hot reload at localhost:8080
@@ -27,13 +25,24 @@ import dragTreeTable from 'drag-tree-table'
  ```javascript
  treeData: {
    lists: [],
+   custom_field: {
+    id: 'id',
+    order: 'sort',
+    lists: 'children',
+    parent_id: 'parent_id'
+  },
    columns: []
  }
  // methods
  onTreeDataChange(list) {
   this.treeData.lists = list
+  // custom_field.list === 'children'
+  // 自定义lists相应的回传数据也用相同字段
+  // this.treeData.children = list
  },
  ```
+ > custom_field 可选项，支持自定义字段名，如lists改为children
+
  > isdraggable:默认true，如不想拖拽可手动添加
  
  > 数据源（lists）配置   
@@ -44,7 +53,7 @@ id|String|唯一标志
 parent_id|String|父节点ID
 order|Number|排序,0开始,onDrag后order会重置
 name|String|默认显示内容
-open|Boolean|true展开,false收起
+open|Boolean（非必须）|true展开,false收起(默认收起)
 lists|Array|子节点
 
  > lists 配置示例
