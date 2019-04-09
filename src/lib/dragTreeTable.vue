@@ -54,6 +54,7 @@
         isDraing: false,
         custom_field: {
           id: 'id',
+          parent_id: 'parent_id',
           order: 'order',
           lists: 'lists'
         },
@@ -241,12 +242,7 @@
     },
     mounted() {
       if(this.data.custom_field) {
-        this.custom_field = Object.assign({
-          id: 'id',
-          parent_id: 'parent_id',
-          order: 'order',
-          lists: 'lists'
-        }, this.data.custom_field)
+        this.custom_field = Object.assign({}, this.custom_field, this.data.custom_field)
       }
     }
   }
