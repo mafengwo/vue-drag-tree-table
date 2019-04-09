@@ -14,7 +14,7 @@
                     :key="subIndex">
                     <span v-if="subItem.type === 'selection'">
                         <space :depth="depth"/>
-                        <span v-if = "model.lists && model.lists.length" class="zip-icon" v-bind:class="[model.open ? 'arrow-bottom' : 'arrow-right']">
+                        <span v-if = "model[custom_field.lists] && model[custom_field.lists].length" class="zip-icon" v-bind:class="[model[custom_field.open] ? 'arrow-bottom' : 'arrow-right']">
                         </span>
                         <span v-else class="zip-icon arrow-transparent">
                         </span>
@@ -49,13 +49,14 @@
                 </div>
             </div>
             <row 
-                v-show="model.open"
-                v-for="(item, index) in model.lists" 
+                v-show="model[custom_field.open]"
+                v-for="(item, index) in model[custom_field.lists]" 
                 :model="item"
                 :columns="columns"
                 :key="index" 
                 :isdraggable="isdraggable"
                 :depth="depth * 1 + 1"
+                :custom_field="custom_field"
                 v-if="isFolder">
             </row>
         </div>
@@ -66,7 +67,7 @@
     import space from './space.vue'
     export default {
       name: 'row',
-        props: ['model','depth','columns','isdraggable'],
+        props: ['model','depth','columns','isdraggable','custom_field'],
         data() {
             return {
                 open: false,
@@ -79,13 +80,14 @@
         },
         computed: {
             isFolder() {
-                return this.model.lists && this.model.lists.length
+                return this.model[this.custom_field.lists] && this.model[this.custom_field.lists].length
             }
         },
         methods: {
             toggle() {
                 if(this.isFolder) {
-                    this.model.open = !this.model.open
+                    this.model[this.custom_field.open] = !this.model[this.custom_field.open];
+                    this.$forceUpdate()
                 }
             },
             dragstart(e) {
@@ -101,9 +103,6 @@
                 e.target.style.opacity = 1;
                 
             }
-        },
-        mounted() {
-            console.log(33333, this.isdraggable)
         }
     }
     </script>

@@ -11,7 +11,9 @@
         </div>
         <div class="drag-tree-table-body" @dragover="draging" @dragend="drop"  :class="isDraing ? 'is-draging' : '' ">
           <row depth="0" :columns="data.columns" :isdraggable="isdraggable"
-            :model="item" v-for="(item, index) in data.lists" :key="index">
+            :model="item" v-for="(item, index) in data[custom_field.lists]" 
+            :custom_field="custom_field"
+            :key="index">
         </row>
         </div>
         
@@ -49,7 +51,12 @@
         dragId: '',
         targetId: '',
         whereInsert: '',
-        isDraing: false
+        isDraing: false,
+        custom_field: {
+          id: 'id',
+          order: 'order',
+          lists: 'lists'
+        },
       }
     },
     methods: {
@@ -88,7 +95,7 @@
       drop(event) {
         this.clearHoverStatus()
         this.resetTreeData()
-       this.isDraing = false;
+        this.isDraing = false;
       },
       filter(x,y) {
         var rows = document.querySelectorAll('.tree-row')
@@ -150,53 +157,59 @@
         }
       },
       resetTreeData() {
-        if (this.targetId === undefined) return 
+        if (this.targetId === undefined) return
+        const listKey = this.custom_field.lists
+        const parentIdKey = this.custom_field.parent_id
+        const idKey = this.custom_field.id
+
         const newList = []
-        const curList = this.data.lists
+        const curList = this.data[listKey]
         const _this = this
+        
         function pushData(curList, needPushList) {
           for( let i = 0; i < curList.length; i++) {
             const item = curList[i]
             var obj = _this.deepClone(item)
-            obj.lists = []
+            obj[listKey] = []
             if (_this.targetId == item.id) {
-              const curDragItem = _this.getCurDragItem(_this.data.lists, window.dragId)
+              const curDragItem = _this.getCurDragItem(_this.data[listKey], window.dragId)
               if (_this.whereInsert === 'top') {
-                curDragItem.parent_id = item.parent_id
+                curDragItem[parentIdKey] = item[parentIdKey]
                 needPushList.push(curDragItem)
                 needPushList.push(obj)
               } else if (_this.whereInsert === 'center'){
-                curDragItem.parent_id = item.id
-                obj.lists.push(curDragItem)
+                curDragItem[parentIdKey] = item[idKey]
+                obj[listKey].push(curDragItem)
                 needPushList.push(obj)
               } else {
-                curDragItem.parent_id = item.parent_id
+                curDragItem[parentIdKey] = item[parentIdKey]
                 needPushList.push(obj)
                 needPushList.push(curDragItem)
               }
             } else {
-              if (window.dragId != item.id){
+              if (window.dragId != item[idKey]){
                 needPushList.push(obj)
               }
             }
-            if (item.lists && item.lists.length) {
-              pushData(item.lists, obj.lists)
+            if (item[listKey] && item[listKey].length) {
+              pushData(item[listKey], obj[listKey])
             }
           }
         }
         pushData(curList, newList)
           this.resetOrder(newList)
-        this.onDrag(newList)
-      },
+          this.onDrag(newList)
+        },
         resetOrder(list) {
+          const listKey = this.custom_field.lists;
           for (var i = 0; i< list.length; i++) {
-              list[i].order = i;
-              if (list[i].lists && list[i].lists.length) {
-                  this.resetOrder(list[i].lists)
+              list[i][this.custom_field.order] = i;
+              if (list[i][listKey] && list[i][listKey].length) {
+                  this.resetOrder(list[i][listKey])
               }
           }
         },
-      deepClone (aObject) {
+        deepClone (aObject) {
         if (!aObject) {
           return aObject;
         }
@@ -210,20 +223,30 @@
       },
       getCurDragItem(lists, id) {
         var curItem = null
-        var _this = this
+        const listKey = this.custom_field.lists
         function getchild(curList) {
           for( let i = 0; i < curList.length; i++) {
             var item = curList[i]
             if (item.id == id) {
               curItem = JSON.parse(JSON.stringify(item))
               break
-            } else if (item.lists && item.lists.length) {
-              getchild(item.lists)
+            } else if (item[listKey] && item[listKey].length) {
+              getchild(item[listKey])
             }
           }
         }
         getchild(lists)
         return curItem;
+      }
+    },
+    mounted() {
+      if(this.data.custom_field) {
+        this.custom_field = Object.assign({
+          id: 'id',
+          parent_id: 'parent_id',
+          order: 'order',
+          lists: 'lists'
+        }, this.data.custom_field)
       }
     }
   }
