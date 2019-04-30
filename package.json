@@ -1,7 +1,7 @@
 {
   "name": "drag-tree-table",
   "description": "基于Vue实现可以拖拽排序的树形表格",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "author": "yangjinkai",
   "license": "MIT",
   "main": "dist/dtree-table.js",
