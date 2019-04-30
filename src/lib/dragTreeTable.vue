@@ -11,12 +11,12 @@
         </div>
         <div class="drag-tree-table-body" @dragover="draging" @dragend="drop"  :class="isDraing ? 'is-draging' : '' ">
           <row depth="0" :columns="data.columns" :isdraggable="isdraggable"
-            :model="item" v-for="(item, index) in data[custom_field.lists]" 
+            :model="item" v-for="(item, index) in data[custom_field.lists]"
             :custom_field="custom_field"
             :key="index">
         </row>
         </div>
-        
+
     </div>
 </template>
 
@@ -56,7 +56,8 @@
           id: 'id',
           parent_id: 'parent_id',
           order: 'order',
-          lists: 'lists'
+          lists: 'lists',
+          open: 'open'
         },
       }
     },
@@ -166,7 +167,7 @@
         const newList = []
         const curList = this.data[listKey]
         const _this = this
-        
+
         function pushData(curList, needPushList) {
           for( let i = 0; i < curList.length; i++) {
             const item = curList[i]
