@@ -6,13 +6,21 @@
             :width="item.width"
             :flex="item.flex"
             :key="index" >
-            {{item.title}}
+            <input 
+              v-if="item.type == 'checkbox'"
+              class="checkbox"
+              type="checkbox"
+              @click="onCheckAll($event, item.onChange)">
+            <span v-else>
+              {{item.title}}
+            </span>
           </column>
         </div>
         <div class="drag-tree-table-body" @dragover="draging" @dragend="drop"  :class="isDraing ? 'is-draging' : '' ">
           <row depth="0" :columns="data.columns" :isdraggable="isdraggable"
             :model="item" v-for="(item, index) in data[custom_field.lists]"
             :custom_field="custom_field"
+            :onCheck="onSingleCheckChange"
             :key="index">
         </row>
         </div>
@@ -57,8 +65,10 @@
           parent_id: 'parent_id',
           order: 'order',
           lists: 'lists',
-          open: 'open'
+          open: 'open',
+          checked: 'checked'
         },
+        onCheckChange: null,
       }
     },
     methods: {
@@ -239,12 +249,62 @@
         }
         getchild(lists)
         return curItem;
-      }
+      },
+      onCheckAll(evt, func) {
+        this.setAllCheckData(this.data[this.custom_field.lists], !!evt.target.checked);
+        const checkedList = this.getCheckedList(this.data[this.custom_field.lists])
+        func && func(checkedList)
+      },
+      // 单个CheckBox勾选触发
+      onSingleCheckChange() {
+        const checkedList = this.getCheckedList(this.data[this.custom_field.lists])
+        this.onCheckChange && this.onCheckChange(checkedList)
+      },
+      // 根据flag批量处理数据
+      setAllCheckData (curList, flag) {
+        const listKey = this.custom_field.lists;
+        for( let i = 0; i < curList.length; i++) {
+          var item = curList[i];
+          this.$set(item, 'checked', flag);
+          if (item[listKey] && item[listKey].length) {
+            this.setAllCheckData(item[listKey], flag);
+          }
+        }
+      },
+      // 获取所有选中的行
+      getCheckedList(lists) {
+        const listKey = this.custom_field.lists;
+        var checkedList = [];
+        const deepList = this.deepClone(lists)
+        function getchild(curList) {
+          for( let i = 0; i < curList.length; i++) {
+            var item = curList[i]
+            if (item.checked) {
+              checkedList.push(item)
+            }
+            if (item[listKey] && item[listKey].length) {
+              getchild(item[listKey])
+            }
+          }
+        }
+        getchild(deepList)
+        return checkedList;
+      },
     },
     mounted() {
       if(this.data.custom_field) {
         this.custom_field = Object.assign({}, this.custom_field, this.data.custom_field)
       }
+      setTimeout(() => {
+        this.data.columns.map((item) => {
+          if(item.type == 'checkbox') {
+            this.onCheckChange = item.onChange;
+          }
+        })
+      }, 100);
+      
+      
+      // this.setInitData(this.data[this.custom_field.lists])
     }
   }
 </script>

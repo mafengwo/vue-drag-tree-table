@@ -35,10 +35,21 @@ export default {
     },
     onDetail(item) {
       console.log("详情", item);
+    },
+    onCheckChange(rows) {
+      console.log(rows)
     }
   },
   mounted() {
     this.treeData.columns = [
+      {
+        type: "checkbox",
+        title: "链接",
+        field: "uri",
+        width: 80,
+        align: "center",
+        onChange: this.onCheckChange
+      },
       {
         type: "selection",
         title: "菜单名称",
@@ -48,13 +59,6 @@ export default {
         formatter: item => {
           return "<span>" + item.name + "</span>";
         }
-      },
-      {
-        title: "链接",
-        field: "uri",
-        width: 200,
-        align: "center",
-        flex: 1
       },
       {
         title: "操作",
@@ -86,6 +90,7 @@ export default {
           sort: 0,
           name: "客户管理",
           uri: "",
+          checked: true,
           children: [
             {
               id: 201,

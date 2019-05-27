@@ -31,6 +31,14 @@
                             <i :class="acItem.icon" v-html="acItem.formatter(model)"></i>
                         </a>
                     </span>
+                    <span v-else-if="subItem.type === 'checkbox'">
+                      <input type="checkbox"
+                        :name="model[custom_field.id]"
+                        v-model="model[custom_field.checked]"
+                        class="checkbox action-item"
+                        :checked="model[custom_field.checked] || false"
+                        @click.stop="onCheckboxClick($event, model)"/>
+                    </span>
                     <span v-else>
                         <span v-if="subItem.formatter" v-html="subItem.formatter(model)"></span>
                         <span v-else>{{model[subItem.field]}}</span>
@@ -57,6 +65,7 @@
                 :isdraggable="isdraggable"
                 :depth="depth * 1 + 1"
                 :custom_field="custom_field"
+                :onCheck="onCheck"
                 v-if="isFolder">
             </row>
         </div>
@@ -67,7 +76,7 @@
     import space from './space.vue'
     export default {
       name: 'row',
-        props: ['model','depth','columns','isdraggable','custom_field'],
+        props: ['model','depth','columns','isdraggable','custom_field','onCheck'],
         data() {
             return {
                 open: false,
@@ -100,13 +109,32 @@
                 e.target.style.opacity = 0.2
             },
             dragend(e) {
-                e.target.style.opacity = 1;
-                
+              e.target.style.opacity = 1;
+            },
+            setAllCheckData (curList, flag) {
+              const listKey = this.custom_field.lists
+              for( let i = 0; i < curList.length; i++) {
+                var item = curList[i]
+                this.$set(item, 'checked', flag)
+                if (item[listKey] && item[listKey].length) {
+                  this.setAllCheckData(item[listKey], flag)
+                }
+              }
+            },
+            onCheckboxClick(evt, model) {
+              const list = model[this.custom_field.lists];
+              // 判断是否有子节点，如有需递归处理
+              if (list) {
+                this.setAllCheckData(model[this.custom_field.lists] || [], !!evt.target.checked)
+              } else {
+                this.$set(model, 'checked', !!evt.target.checked)
+              }
+              this.onCheck && this.onCheck()
             }
         }
     }
     </script>
-    <style lang="scss">
+  <style lang="scss">
     .tree-block{
       width: 100%;
       background: rgba(255,255,255,0.8)
