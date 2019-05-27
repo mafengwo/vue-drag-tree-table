@@ -101,7 +101,7 @@ lists|Array|子节点
 
 参数|可选值|描述
 ---|:--:|---:
-type|'selection', 'actions'|selection会显示折叠图标，actions指操作栏
+type|'selection', 'actions', 'checkbox'|selection会显示折叠图标，actions指操作栏, checkbox支持多选全选
 title|String|表格标题
 field|String|单元格内容取值使用
 width|Number|单元格宽度
