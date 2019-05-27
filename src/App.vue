@@ -35,6 +35,9 @@ export default {
     },
     onDetail(item) {
       console.log("详情", item);
+    },
+    onCheckChange(rows) {
+      console.log(this.treeData.children)
     }
   },
   mounted() {
@@ -50,11 +53,13 @@ export default {
         }
       },
       {
+        type: "checkbox",
         title: "链接",
         field: "uri",
         width: 200,
         align: "center",
-        flex: 1
+        flex: 1,
+        onChange: this.onCheckChange
       },
       {
         title: "操作",
@@ -85,6 +90,7 @@ export default {
           parent_id: 0,
           sort: 0,
           name: "客户管理",
+          checked:true,
           uri: "",
           children: [
             {

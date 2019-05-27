@@ -6,7 +6,14 @@
             :width="item.width"
             :flex="item.flex"
             :key="index" >
-            {{item.title}}
+            <input 
+              v-if="item.type == 'checkbox'"
+              class="checkbox"
+              type="checkbox"
+              @click="checkAll($event, item.onChange)">
+            <span v-else>
+              {{item.title}}
+            </span>
           </column>
         </div>
         <div class="drag-tree-table-body" @dragover="draging" @dragend="drop"  :class="isDraing ? 'is-draging' : '' ">
@@ -57,7 +64,8 @@
           parent_id: 'parent_id',
           order: 'order',
           lists: 'lists',
-          open: 'open'
+          open: 'open',
+          checked: 'checked'
         },
       }
     },
@@ -239,6 +247,21 @@
         }
         getchild(lists)
         return curItem;
+      },
+      checkAll(evt, func) {
+        this.data[this.custom_field.lists][1].checked = true;
+        var tempData = cloneDeep(this.data)
+        this.data = [];
+        console.log(tempData)
+        this.data = tempData;
+        this.$forceUpdate();
+        // const checkboxArr = this.$refs.table.querySelectorAll('.checkbox');
+        // for (let index = 0; index < checkboxArr.length; index++) {
+        //   const element = checkboxArr[index];
+        //   element.checked = evt.target.checked;
+        // }
+        func && func()
+
       }
     },
     mounted() {

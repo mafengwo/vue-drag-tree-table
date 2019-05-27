@@ -31,6 +31,14 @@
                             <i :class="acItem.icon" v-html="acItem.formatter(model)"></i>
                         </a>
                     </span>
+                    <span v-else-if="subItem.type === 'checkbox'">
+                      <input type="checkbox"
+                        :name="model[custom_field.id]"
+                        v-model="model[custom_field.checked]"
+                        class="checkbox action-item"
+                        :checked="model[custom_field.checked] || false"
+                        @click.stop="subItem.onChange"/>
+                    </span>
                     <span v-else>
                         <span v-if="subItem.formatter" v-html="subItem.formatter(model)"></span>
                         <span v-else>{{model[subItem.field]}}</span>
