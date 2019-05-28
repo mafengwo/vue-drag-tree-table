@@ -122,6 +122,9 @@ formatter|Function|自定义单元格显示内容,参数为当前行数据
     }
   },
   {
+    type: 'checkbox',
+    isContainChildren: true, //是否勾选子节点，默认false
+    onChange: this.onCheck, // parmas selectRows
     title: '链接',
     field: 'url',
     width: 200,

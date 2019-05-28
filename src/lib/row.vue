@@ -66,6 +66,7 @@
                 :depth="depth * 1 + 1"
                 :custom_field="custom_field"
                 :onCheck="onCheck"
+                :isContainChildren="isContainChildren"
                 v-if="isFolder">
             </row>
         </div>
@@ -76,7 +77,7 @@
     import space from './space.vue'
     export default {
       name: 'row',
-        props: ['model','depth','columns','isdraggable','custom_field','onCheck'],
+        props: ['model','depth','columns','isdraggable','custom_field','onCheck','isContainChildren'],
         data() {
             return {
                 open: false,
@@ -124,7 +125,7 @@
             onCheckboxClick(evt, model) {
               const list = model[this.custom_field.lists];
               // 判断是否有子节点，如有需递归处理
-              if (list) {
+              if (list && this.isContainChildren) {
                 this.setAllCheckData(model[this.custom_field.lists] || [], !!evt.target.checked)
               } else {
                 this.$set(model, 'checked', !!evt.target.checked)

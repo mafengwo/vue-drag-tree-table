@@ -48,7 +48,8 @@ export default {
         field: "uri",
         width: 80,
         align: "center",
-        onChange: this.onCheckChange
+        onChange: this.onCheckChange,
+        isContainChildren: false // 是否勾选子节点
       },
       {
         type: "selection",

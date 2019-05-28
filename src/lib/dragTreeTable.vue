@@ -21,10 +21,10 @@
             :model="item" v-for="(item, index) in data[custom_field.lists]"
             :custom_field="custom_field"
             :onCheck="onSingleCheckChange"
+            :isContainChildren="isContainChildren"
             :key="index">
         </row>
         </div>
-
     </div>
 </template>
 
@@ -69,6 +69,7 @@
           checked: 'checked'
         },
         onCheckChange: null,
+        isContainChildren: false
       }
     },
     methods: {
@@ -299,6 +300,7 @@
         this.data.columns.map((item) => {
           if(item.type == 'checkbox') {
             this.onCheckChange = item.onChange;
+            this.isContainChildren = item.isContainChildren;
           }
         })
       }, 100);
