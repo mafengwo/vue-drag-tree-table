@@ -65,11 +65,12 @@ export default {
 
 
  ```
- > custom_field 可选项，支持自定义字段名，如lists改为children
+ custom_field 可选项，支持自定义字段名，如lists改为children
 
 isdraggable:默认true，如不想拖拽可手动添加
 
 fixed: 默认false，如果想固定表头，可以设置true，并设置高度height(必须)
+
 height: 表格高度，当fixed为true时必需
  > 数据源（lists）配置   
 
