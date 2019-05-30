@@ -15,36 +15,60 @@ npm run dev
 npm run build
 ```
 ## 使用方式
-----
-```javascript
-import dragTreeTable from 'drag-tree-table'
-```
+
 ```html
-<dragTreeTable :data="treeData" :onDrag="onTreeDataChange" :isdraggable="true"></dragTreeTable>
- ```
- ```javascript
- treeData: {
-   lists: [],
-   custom_field: {
-    id: 'id',
-    order: 'sort',
-    lists: 'children',
-    parent_id: 'parent_id'
+<dragTreeTable
+:data="treeData"
+:onDrag="onTreeDataChange"
+:fixed="true"
+:height="300"
+:isdraggable="true"></dragTreeTable>
+```
+
+```javascript
+<script>
+import dragTreeTable from "dragTreeTable";
+
+export default {
+  name: "app",
+  data() {
+    return {
+      treeData: {
+        columns: [],
+        lists: [],
+        custom_field: {
+          id: 'id',
+          order: 'sort',
+          lists: 'children',
+          parent_id: 'parent_id'
+        }
+      }
+    };
   },
-   columns: []
- }
- // methods
- onTreeDataChange(list) {
-  this.treeData.lists = list
-  // custom_field.list === 'children'
-  // 自定义lists相应的回传数据也用相同字段
-  // this.treeData.children = list
- },
+  components: {
+    dragTreeTable
+  },
+  methods: {
+    // list:更新后的数据源
+    // from: 当前被拖拽的行
+    // to: 目标拖拽行
+    // where: 拖拽的类型，top（上面）、center（里面）、bottom（下面）
+    onTreeDataChange(list, from, to, where) {
+      console.log(from, to, where);
+      this.treeData.lists = list;
+    }
+  }
+};
+</script>
+
+
  ```
  > custom_field 可选项，支持自定义字段名，如lists改为children
 
- > isdraggable:默认true，如不想拖拽可手动添加
- 
+isdraggable:默认true，如不想拖拽可手动添加
+
+fixed: 默认false，如果想固定表头，可以设置true，并设置高度height(必须)
+height: 表格高度，当fixed为true时必需
  > 数据源（lists）配置   
 
 参数|可选值|描述

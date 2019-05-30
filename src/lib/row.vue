@@ -3,8 +3,9 @@
             @dragend="dragend($event)">
             <div class="tree-row"
                 @click="toggle" 
-                :tree-id="model.id"
-                :tree-p-id="model.parent_id"> 
+                :data-level="depth"
+                :tree-id="model[custom_field.id]"
+                :tree-p-id="model[custom_field.parent_id]"> 
                 <column
                     v-for="(subItem, subIndex) in columns"
                     v-bind:class="'align-' + subItem.align"
@@ -214,7 +215,7 @@
         transform: rotate(90deg)
     }
     [draggable=true] {
-  -khtml-user-drag: element;
-}
+      -khtml-user-drag: element;
+    }
     </style>
     

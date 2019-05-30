@@ -1,6 +1,11 @@
 <template>
   <div id="app">
-    <dragTreeTable :data="treeData" :onDrag="onTreeDataChange" :isdraggable="true"></dragTreeTable>
+    <dragTreeTable
+      :data="treeData"
+      :onDrag="onTreeDataChange"
+      :isdraggable="true"
+      :fixed="true"
+      :height="400"></dragTreeTable>
   </div>
 </template>
 
@@ -12,13 +17,13 @@ export default {
     return {
       treeData: {
         columns: [],
-        children: [],
+        lists: [],
         custom_field: {
           id: 'id',
           order: 'sort',
           lists: 'children',
           parent_id: 'parent_id'
-        },
+        }
       }
     };
   },
@@ -26,9 +31,9 @@ export default {
     dragTreeTable
   },
   methods: {
-    onTreeDataChange(list) {
-      console.log(list);
-      this.treeData.children = list;
+    onTreeDataChange(list, from, to, where) {
+      console.log(from, to, where);
+      this.treeData.lists = list;
     },
     onEdit(item) {
       console.log("编辑", item);
@@ -84,7 +89,7 @@ export default {
         ]
       }
     ];
-    this.treeData.children = [
+    this.treeData.lists = [
         {
           id: 110,
           parent_id: 0,
