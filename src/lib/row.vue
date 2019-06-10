@@ -34,10 +34,10 @@
                     </span>
                     <span v-else-if="subItem.type === 'checkbox'">
                       <input type="checkbox"
+                        v-if="model.isShowCheckbox !== false"
                         :name="model[custom_field.id]"
                         v-model="model[custom_field.checked]"
                         class="checkbox action-item"
-                        :checked="model[custom_field.checked] || false"
                         @click.stop="onCheckboxClick($event, model)"/>
                     </span>
                     <span v-else>

@@ -1,7 +1,7 @@
 {
   "name": "drag-tree-table",
   "description": "基于Vue实现可以拖拽排序的树形表格",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "author": "yangjinkai",
   "license": "MIT",
   "main": "dist/dtree-table.js",
@@ -19,6 +19,7 @@
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
+    "babel-plugin-transform-object-assign": "^6.22.0",
     "babel-preset-env": "^1.6.0",
     "babel-preset-stage-3": "^6.24.1",
     "cross-env": "^5.0.5",

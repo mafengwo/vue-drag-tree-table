@@ -104,7 +104,8 @@ export default {
               sort: 0,
               name: "联系人",
               uri: "/customer/contacts",
-              children: null
+              children: null,
+              isShowCheckbox: false
             },
             {
               id: 173,

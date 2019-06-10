@@ -262,7 +262,7 @@
         function getchild(curList) {
           for( let i = 0; i < curList.length; i++) {
             var item = curList[i]
-            if (item.checked) {
+            if (item.checked && item.isShowCheckbox != false) {
               checkedList.push(item)
             }
             if (item[listKey] && item[listKey].length) {
