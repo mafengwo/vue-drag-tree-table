@@ -82,6 +82,7 @@ order|Number|排序,0开始,onDrag后order会重置
 name|String|默认显示内容
 open|Boolean（非必须）|true展开,false收起(默认收起)
 lists|Array|子节点
+isShowCheckbox|Boolean|控制CheckBox列某些行是否显示CheckBox
 
  > lists 配置示例
  ```javascript
@@ -101,6 +102,7 @@ lists|Array|子节点
     "name":"昆虫类",
     "uri":"/masd/ds",
     "open":true,
+    "isShowCheckbox": false, '如果设置了type=checkbox,但是想控制某些行不显示CheckBox，可以用此属性'
     "lists":[
       {
         "id":12,
