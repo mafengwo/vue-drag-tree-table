@@ -129,7 +129,7 @@ isShowCheckbox|Boolean|控制CheckBox列某些行是否显示CheckBox
 
 参数|可选值|描述
 ---|:--:|---:
-type|'selection', 'actions', 'checkbox'|selection会显示折叠图标，actions指操作栏, checkbox支持多选全选
+type|'selection', 'actions', 'checkbox'|selection会显示折叠图标，actions指操作栏, checkbox支持多选全选,不选默认普通展示
 title|String|表格标题
 field|String|单元格内容取值使用
 width|Number|单元格宽度
