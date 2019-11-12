@@ -6,29 +6,35 @@
   "license": "MIT",
   "main": "dist/dtree-table.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot --host 0.0.0.0",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
+    "dev": "webpack-dev-server --mode development --open --hot --host 0.0.0.0",
+    "build": "webpack --mode production --progress --hide-modules",
+    "webpack": "node_modules/webpack/bin/webpack.js --mode=development"
   },
   "dependencies": {
-    "vue": "^2.5.11"
+    "vue-router": "^3.1.3"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ColdDay/vue-drag-tree-table.git"
   },
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-preset-env": "^1.6.0",
-    "babel-preset-stage-3": "^6.24.1",
-    "cross-env": "^5.0.5",
-    "css-loader": "^0.28.7",
-    "file-loader": "^1.1.4",
-    "node-sass": "^4.5.3",
-    "sass-loader": "^6.0.6",
-    "vue-loader": "^13.0.5",
-    "vue-template-compiler": "^2.4.4",
-    "webpack": "^3.6.0",
-    "webpack-dev-server": ">=3.1.11"
+    "@babel/core": "^7.7.2",
+    "@babel/plugin-transform-runtime": "^7.6.2",
+    "@babel/preset-env": "^7.7.1",
+    "@babel/runtime": "^7.7.2",
+    "babel-loader": "^8.0.6",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^3.2.0",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.8.0",
+    "node-sass": "^4.13.0",
+    "sass-loader": "^8.0.0",
+    "vue": "^2.6.10",
+    "vue-loader": "^15.7.2",
+    "vue-style-loader": "^4.1.2",
+    "vue-template-compiler": "^2.6.10",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0"
   }
 }
