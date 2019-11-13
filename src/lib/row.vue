@@ -8,7 +8,7 @@
                 :tree-p-id="model[custom_field.parent_id]"> 
                 <column
                     v-for="(subItem, subIndex) in columns"
-                    v-bind:class="'align-' + subItem.align"
+                    v-bind:class="['align-' + subItem.align, 'colIndex' + subIndex]"
                     :field="subItem.field"
                     :width="subItem.width"
                     :flex="subItem.flex"
@@ -108,8 +108,9 @@
                     // Firefox drag have a bug
                     e.dataTransfer.setData('Text', this.id);
                 }
-                window.dragId = e.target.children[0].getAttribute('tree-id')
-                window.dragParentNode = e.target
+                window.dragId = e.target.children[0].getAttribute('tree-id');
+                window.dragPId = e.target.children[0].getAttribute('tree-p-id');
+                window.dragParentNode = e.target;
                 e.target.style.opacity = 0.2
             },
             dragend(e) {

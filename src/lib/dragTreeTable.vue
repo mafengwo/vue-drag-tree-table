@@ -6,7 +6,7 @@
             :width="item.width"
             :flex="item.flex"
             :border="border"
-            v-bind:class="'align-' + item.titleAlign"
+            v-bind:class="['align-' + item.titleAlign, 'colIndex' + index]"
             :key="index" >
             <input 
               v-if="item.type == 'checkbox'"
@@ -16,6 +16,9 @@
             <span v-else>
               {{item.title}}
             </span>
+            <div class="resize-line" @mousedown="mousedown(index, $event)">
+
+            </div>
           </column>
         </div>
         <div class="drag-tree-table-body"
@@ -32,6 +35,8 @@
             :isContainChildren="isContainChildren"
             :key="index">
         </row>
+        </div>
+        <div class="drag-line">
         </div>
     </div>
 </template>
@@ -73,7 +78,9 @@
         default: false
       },
       height: Number,
-      border: String
+      border: String,
+      onlySameLevelCanDrag: String,
+      hightRowChange: String
     },
     data() {
       return {
@@ -92,7 +99,13 @@
           checked: 'checked'
         },
         onCheckChange: null,
-        isContainChildren: false
+        isContainChildren: false,
+        mouse: {
+          status: 0,
+          startX: 0,
+          curColWidth: 0,
+          curIndex: 0
+        }
       }
     },
     methods: {
@@ -112,19 +125,33 @@
         func.clearHoverStatus()
         this.resetTreeData()
         this.isDraing = false;
+        
+        if (this.targetId !== undefined) {
+          if (this.hightRowChange !== undefined) {
+            this.$nextTick(()=> {
+              var rowEle = document.querySelector("[tree-id='"+window.dragId+"']");
+              rowEle.style.backgroundColor = 'rgba(64,158,255,0.5)';
+              setTimeout(() => {
+                rowEle.style.backgroundColor = 'rgba(64,158,255,0)';
+              }, 2000);
+            })
+          }
+        }
       },
       // 查找匹配的行，处理拖拽样式
       filter(x,y) {
+        console.log(2222222)
         var rows = document.querySelectorAll('.tree-row')
         this.targetId = undefined
-        const dragOriginElementTop = func.getElementTop(dragParentNode, this.$refs.table)
-        const dragOriginElementLeft = func.getElementLeft(dragParentNode)
-        const dragW = dragOriginElementLeft + dragParentNode.clientWidth
-        const dragH = dragOriginElementTop + dragParentNode.clientHeight
+        const dragOriginElementTop = func.getElementTop(window.dragParentNode, this.$refs.table)
+        const dragOriginElementLeft = func.getElementLeft(window.dragParentNode)
+        const dragW = dragOriginElementLeft + window.dragParentNode.clientWidth
+        const dragH = dragOriginElementTop + window.dragParentNode.clientHeight
         if (x >= dragOriginElementLeft && x <= dragW && y >= dragOriginElementTop && y <= dragH) {
           // 当前正在拖拽原始块不允许插入
           return
         }
+        
         for(let i=0; i < rows.length; i++) {
           const row = rows[i]
           const rx = func.getElementLeft(row);
@@ -133,9 +160,14 @@
           const rh = row.clientHeight;
           if (x > rx && x < (rx + rw) && y > ry && y < (ry + rh)) {
             const diffY = y - ry
+            const pId = row.getAttribute('tree-p-id');
+            // 不允许改变层级结构，只能改变上下顺序逻辑
+            if ( this.onlySameLevelCanDrag !== undefined && pId !== window.dragPId) {
+              return;
+            }
+            this.targetId = row.getAttribute('tree-id');
             const hoverBlock = row.children[row.children.length - 1]
             hoverBlock.style.display = 'block'
-            this.targetId = row.getAttribute('tree-id')
             let whereInsert = ''
             var rowHeight = row.offsetHeight
               if (diffY/rowHeight > 3/4) {
@@ -145,6 +177,10 @@
               }
               whereInsert = 'bottom'
             } else if (diffY/rowHeight > 1/4) {
+              if ( this.onlySameLevelCanDrag !== undefined) {
+                // 不允许改变层级结构，只能改变上下顺序逻辑
+                return;
+              }
               if (hoverBlock.children[1].style.opacity !== '0.5') {
                 func.clearHoverStatus()
                 hoverBlock.children[1].style.opacity = 0.5
@@ -157,16 +193,23 @@
               }
               whereInsert = 'top'
             }
-            this.whereInsert = whereInsert
+            this.whereInsert = whereInsert;
+            break;
           }
+        }
+        if (this.targetId === undefined) {
+          console.log(33333)
+          // 匹配不到清空上一个状态
+          func.clearHoverStatus();
+          let whereInsert = '';
         }
       },
       resetTreeData() {
+        console.log(5555, this.targetId)
         if (this.targetId === undefined) return
         const listKey = this.custom_field.lists
         const parentIdKey = this.custom_field.parent_id
         const idKey = this.custom_field.id
-
         const newList = [];
         const curList = this.data.lists;
         const _this = this;
@@ -175,7 +218,7 @@
         function pushData(curList, needPushList) {
           for( let i = 0; i < curList.length; i++) {
             const item = curList[i]
-            var obj = func.deepClone(item)
+            var obj = func.deepClone(item);
             obj[listKey] = []
             if (_this.targetId == item[idKey]) {
               curDragItem = _this.getItemById(_this.data.lists, window.dragId);
@@ -185,9 +228,11 @@
                 needPushList.push(curDragItem)
                 needPushList.push(obj)
               } else if (_this.whereInsert === 'center'){
-                curDragItem[parentIdKey] = item[idKey]
+                curDragItem[parentIdKey] = item[idKey];
+                obj.open = true;
                 obj[listKey].push(curDragItem)
                 needPushList.push(obj)
+                
               } else {
                 curDragItem[parentIdKey] = item[parentIdKey]
                 needPushList.push(obj)
@@ -277,6 +322,16 @@
         getchild(deepList)
         return checkedList;
       },
+      mousedown(curIndex, e){
+        const startX = e.target.getBoundingClientRect().x;
+        const curColWidth = e.target.parentElement.offsetWidth;
+        this.mouse = {
+          status: 1,
+          startX,
+          curIndex,
+          curColWidth
+        }
+      }
     },
     mounted() {
       if(this.data.custom_field) {
@@ -289,13 +344,40 @@
             this.isContainChildren = item.isContainChildren;
           }
         })
-      }, 100);      
+      }, 100); 
+      window.addEventListener('mouseup', e => {
+        if (this.mouse.status) {
+          const curX = e.clientX;
+          var line = document.querySelector('.drag-line');
+          line.style.left = '-10000px';
+          this.mouse.status = 0;
+          const curWidth = this.mouse.curColWidth;
+          const subWidth = curX - this.mouse.startX;
+          const lastWidth = curWidth + subWidth;
+          const cols = document.querySelectorAll('.colIndex' + this.mouse.curIndex);
+          for (let index = 0; index < cols.length; index++) {
+            const element = cols[index];
+            element.style.width = lastWidth + 'px'; 
+          }
+          // 更新数据源
+          this.data.columns[this.mouse.curIndex].width = lastWidth;
+        }
+      });     
+      window.addEventListener('mousemove', e => {
+        if (this.mouse.status) {
+          const endX = e.clientX;
+          const tableLeft = document.querySelector('.drag-tree-table').getBoundingClientRect().left;
+          var line = document.querySelector('.drag-line');
+          line.style.left = endX - tableLeft + 'px';
+        }
+      });     
     }
   }
 </script>
 
 <style lang="scss">
   .drag-tree-table{
+    position: relative;
     margin: 20px 0;
     color: #606266;
     font-size: 12px;
@@ -303,6 +385,14 @@
       border: 1px solid #eee;
       border-right: none;
     }
+  }
+  .drag-line{
+    position:absolute;
+    top: 0;
+    left: -1000px;
+    height: 100%;
+    width: 1px;
+    background: #ccc;
   }
   .drag-tree-table-header{
     display: flex;
@@ -321,11 +411,18 @@
     .align-center{
         text-align: center;
     }
+    .tree-column{
+      user-select: none;
+    }
   }
   .tree-icon-hidden{
     visibility: hidden;
   }
   .is-draging .tree-row:hover{
     background: transparent !important;
+  }
+  .tree-row{
+    background-color: rgba(64,158,255,0);
+    transition: background-color 1s linear;
   }
 </style>

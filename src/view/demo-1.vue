@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <dragTreeTable :data="treeData" :onDrag="onTreeDataChange" border></dragTreeTable>
+    <dragTreeTable :data="treeData" :onDrag="onTreeDataChange" border onlySameLevelCanDrag hightRowChange></dragTreeTable>
   </div>
 </template>
 
