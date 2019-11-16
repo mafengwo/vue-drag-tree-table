@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <dragTreeTable :data="treeData" :onDrag="onTreeDataChange" border onlySameLevelCanDrag hightRowChange></dragTreeTable>
+    <dragTreeTable :data="treeData" :onDrag="onTreeDataChange"></dragTreeTable>
   </div>
 </template>
 
@@ -24,16 +24,20 @@ export default {
     onTreeDataChange(list) {
       console.log(list);
       this.treeData.lists = list;
-    },
-    onEdit(item) {
-      alert("当前行的数据" + JSON.stringify(item));
-    },
-    onDetail(item) {
-      alert("当前行的数据" + JSON.stringify(item));
     }
   },
   mounted() {
     var columns = [
+      {
+        type: "checkbox",
+        width: 100,
+        align: "center",
+        isContainChildren: true, //是否勾选子节点，默认false
+        onChange: (selectRows) => {
+          alert('一共选择了' + selectRows.length + '条数据')
+          console.log(selectRows)
+        }
+      },
       {
         type: "selection",
         title: "菜单名称",
@@ -45,12 +49,7 @@ export default {
           return "<span>" + item.name + "</span>";
         }
       },
-      {
-        title: "ID",
-        field: "id",
-        width: 100,
-        align: "center"
-      },
+      
       {
         title: "链接",
         field: "uri",
@@ -58,27 +57,11 @@ export default {
         align: "center"
       },
       {
-        title: "操作",
-        type: "action",
+        title: "父ID",
+        field: "parent_id",
         width: 150,
-        align: "center",
-        actions: [
-          {
-            text: "查看角色",
-            onclick: this.onDetail,
-            formatter: item => {
-              return "<i>查看角色 </i>";
-            }
-          },
-          {
-            text: "编辑",
-            onclick: this.onEdit,
-            formatter: item => {
-              return "<i>编辑</i>";
-            }
-          }
-        ]
-      }
+        align: "center"
+      },
     ];
     this.treeData = {
       columns: columns,

@@ -5,7 +5,7 @@
             v-for="(item, index) in data.columns"
             :width="item.width"
             :flex="item.flex"
-            :border="border"
+            :border="border === undefined ? resize : border"
             v-bind:class="['align-' + item.titleAlign, 'colIndex' + index]"
             :key="index" >
             <input 
@@ -16,7 +16,7 @@
             <span v-else>
               {{item.title}}
             </span>
-            <div class="resize-line" @mousedown="mousedown(index, $event)">
+            <div class="resize-line" @mousedown="mousedown(index, $event)" v-show="resize!== undefined">
 
             </div>
           </column>
@@ -31,7 +31,7 @@
             v-for="(item, index) in data.lists"
             :custom_field="custom_field"
             :onCheck="onSingleCheckChange"
-            :border="border"
+            :border="border === undefined ? resize : border"
             :isContainChildren="isContainChildren"
             :key="index">
         </row>
@@ -61,8 +61,8 @@
     computed: {
       bodyStyle(){
         return {
-          overflow: this.fixed ? 'auto': 'hidden',
-          height: this.fixed ? this.height + 'px' : 'auto'
+          overflow: this.fixed !== undefined ? 'auto': 'hidden',
+          height: this.fixed !== undefined? (this.height || 400) + 'px' : 'auto'
         }
       }
     },
@@ -73,14 +73,12 @@
       },
       data: Object,
       onDrag: Function,
-      fixed: {
-        type: Boolean,
-        default: false
-      },
-      height: Number,
+      fixed: String | Boolean,
+      height: String | Number,
       border: String,
       onlySameLevelCanDrag: String,
-      hightRowChange: String
+      hightRowChange: String,
+      resize: String
     },
     data() {
       return {
@@ -334,6 +332,7 @@
       }
     },
     mounted() {
+      console.log(3333, this.fixed)
       if(this.data.custom_field) {
         this.custom_field = Object.assign({}, this.custom_field, this.data.custom_field)
       }
