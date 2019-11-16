@@ -61,8 +61,8 @@
     computed: {
       bodyStyle(){
         return {
-          overflow: this.fixed !== undefined ? 'auto': 'hidden',
-          height: this.fixed !== undefined? (this.height || 400) + 'px' : 'auto'
+          overflow: (this.fixed !== undefined && this.fixed !== false) ? 'auto': 'hidden',
+          height: (this.fixed !== undefined && this.fixed !== false) ? (this.height || 400) + 'px' : 'auto'
         }
       }
     },
