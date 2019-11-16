@@ -5,7 +5,7 @@
 IE10+/Chrome/firefox
 > 基于vue实现的可以拖拽排序的树形表格   
 
-![drag-tree-table](http://q087t57rf.bkt.clouddn.com/demo.gif 'drag-tree-table')
+![drag-tree-table](https://www.mofazhuan.com/demo/demo.gif 'drag-tree-table')
 
 ## 安装
 npm
