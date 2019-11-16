@@ -21,7 +21,7 @@ script
 ## 使用方式
 
 ```html
-<<template>
+<template>
   <div id="app">
     <dragTreeTable
       :data="treeData"
