@@ -1,12 +1,13 @@
 # vue drag tree table
 
-[API文档](https://www.npmjs.com/package/drag-tree-table "vue-drag-tree-table") | [DEMO事例](https://www.npmjs.com/package/drag-tree-table "vue-drag-tree-table")
-
+[API文档](https://www.mofazhuan.com/2019/11/14/vue-drag-tree-table%E6%96%87%E6%A1%A3/ "vue-drag-tree-table") | [DEMO](https://www.mofazhuan.com/2019/11/15/vue-drag-tree-table%20Demo/ "vue-drag-tree-table")
 
 IE10+/Chrome/firefox
 > 基于vue实现的可以拖拽排序的树形表格   
 
-![drag-tree-table](http://q087t57rf.bkt.clouddn.com/demo.gif 'drag-tree-table')
+支持拖拽排序、固定头、拖拽改变行宽，checkbox多选、自定义单元格内容等等....
+
+![drag-tree-table](https://www.mofazhuan.com/demo/demo.gif 'drag-tree-table')
 
 ## 安装
 npm
@@ -20,7 +21,7 @@ script
 ## 使用方式
 
 ```html
-<<template>
+<template>
   <div id="app">
     <dragTreeTable
       :data="treeData"
@@ -55,5 +56,5 @@ export default {
 </script>
 
 ```
-更多组件详细功能请参考[API文档](https://www.npmjs.com/package/drag-tree-table "vue-drag-tree-table")
+更多组件详细功能请参考 [API文档](https://www.npmjs.com/package/drag-tree-table "vue-drag-tree-table")
 ## 我的微信```cold_daywx```，欢迎沟通

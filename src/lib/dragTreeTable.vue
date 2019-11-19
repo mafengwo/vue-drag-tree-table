@@ -13,8 +13,7 @@
               class="checkbox"
               type="checkbox"
               @click="onCheckAll($event, item.onChange)">
-            <span v-else>
-              {{item.title}}
+            <span v-else v-html="item.title">
             </span>
             <div class="resize-line" @mousedown="mousedown(index, $event)" v-show="resize!== undefined">
 
@@ -61,8 +60,8 @@
     computed: {
       bodyStyle(){
         return {
-          overflow: this.fixed !== undefined ? 'auto': 'hidden',
-          height: this.fixed !== undefined? (this.height || 400) + 'px' : 'auto'
+          overflow: (this.fixed !== undefined && this.fixed !== false) ? 'auto': 'hidden',
+          height: (this.fixed !== undefined && this.fixed !== false) ? (this.height || 400) + 'px' : 'auto'
         }
       }
     },
@@ -138,7 +137,6 @@
       },
       // 查找匹配的行，处理拖拽样式
       filter(x,y) {
-        console.log(2222222)
         var rows = document.querySelectorAll('.tree-row')
         this.targetId = undefined
         const dragOriginElementTop = func.getElementTop(window.dragParentNode, this.$refs.table)
@@ -196,14 +194,12 @@
           }
         }
         if (this.targetId === undefined) {
-          console.log(33333)
           // 匹配不到清空上一个状态
           func.clearHoverStatus();
           let whereInsert = '';
         }
       },
       resetTreeData() {
-        console.log(5555, this.targetId)
         if (this.targetId === undefined) return
         const listKey = this.custom_field.lists
         const parentIdKey = this.custom_field.parent_id
@@ -332,7 +328,6 @@
       }
     },
     mounted() {
-      console.log(3333, this.fixed)
       if(this.data.custom_field) {
         this.custom_field = Object.assign({}, this.custom_field, this.data.custom_field)
       }
