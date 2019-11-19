@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <dragTreeTable :data="treeData" :onDrag="onTreeDataChange" resize></dragTreeTable>
+    <dragTreeTable :data="treeData" :onDrag="onTreeDataChange" resize :isdraggable="false"></dragTreeTable>
   </div>
 </template>
 
@@ -37,11 +37,15 @@ export default {
       {
         type: "checkbox",
         width: 100,
-        align: "center"
+        align: "center",
+        onChange: (item)=>{
+          console.log(item)
+          alert('您选中了'+ item.length + '条数据');
+        }
       },
       {
         type: "selection",
-        title: "菜单名称",
+        title: "<a>菜单名称</a>",
         field: "name",
         width: 200,
         align: "left",
