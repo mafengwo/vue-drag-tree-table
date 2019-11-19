@@ -57,4 +57,4 @@ export default {
 
 ```
 更多组件详细功能请参考 [API文档](https://www.npmjs.com/package/drag-tree-table "vue-drag-tree-table")
-## 我的微信```cold_daywx```，欢迎沟通
+## 我的微信```cold_daywx```，欢迎沟通（找我加新需求的记得先来个star支持下哦）
