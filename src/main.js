@@ -15,6 +15,7 @@ import hightlight from './view/hightlight.vue';
 import dragEvent from './view/drag-event.vue';
 import checkboxEvent from './view/checkbox-event.vue';
 import disableDrag from './view/disable-drag.vue';
+import Delete from './view/delete.vue';
 
 const routes = [
   { path: '/', component: demo },
@@ -32,6 +33,7 @@ const routes = [
   { path: '/drag-event', component: dragEvent },
   { path: '/checkbox-event', component: checkboxEvent },
   { path: '/disable-drag', component: disableDrag },
+  { path: '/delete', component: Delete },
 ]
 const router = new VueRouter({
   routes

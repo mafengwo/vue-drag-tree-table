@@ -1,6 +1,9 @@
 # vue drag tree table
 
-[API文档](https://www.mofazhuan.com/2019/11/14/vue-drag-tree-table%E6%96%87%E6%A1%A3/ "vue-drag-tree-table") | [DEMO](https://www.mofazhuan.com/2019/11/15/vue-drag-tree-table%20Demo/ "vue-drag-tree-table")
+
+[快速体验](https://www.mofazhuan.com/demo/#/ "vue-drag-tree-table")
+
+[API文档](https://www.mofazhuan.com/2019/11/14/vue-drag-tree-table%E6%96%87%E6%A1%A3/ "vue-drag-tree-table") | [DEMO汇总](https://www.mofazhuan.com/2019/11/15/vue-drag-tree-table%20Demo/ "vue-drag-tree-table")
 
 IE10+/Chrome/firefox
 > 基于vue实现的可以拖拽排序的树形表格   
@@ -57,4 +60,4 @@ export default {
 
 ```
 更多组件详细功能请参考 [API文档](https://www.npmjs.com/package/drag-tree-table "vue-drag-tree-table")
-## 我的微信```cold_daywx```，欢迎沟通
+## 我的微信```cold_daywx```，欢迎沟通（找我加新需求的记得先来个star支持下哦）
