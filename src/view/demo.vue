@@ -1,6 +1,12 @@
 <template>
   <div id="app">
-    <dragTreeTable :data="treeData" :onDrag="onTreeDataChange" resize :isdraggable="false"></dragTreeTable>
+    <dragTreeTable
+      ref="table"
+      :data="treeData"
+      :onDrag="onTreeDataChange"
+      resize
+      :isdraggable="true">
+    </dragTreeTable>
   </div>
 </template>
 
@@ -28,8 +34,11 @@ export default {
     onEdit(item) {
       alert("当前行的数据" + JSON.stringify(item));
     },
-    onDetail(item) {
-      alert("当前行的数据" + JSON.stringify(item));
+    onDel(item) {
+      const updatedLists = this.$refs.table.DelById(item.id)
+      console.log("当前行的数据" , updatedLists);
+      this.treeData.lists = updatedLists;
+      alert('本地删除成功')
     }
   },
   mounted() {
@@ -80,10 +89,10 @@ export default {
             }
           },
           {
-            text: "编辑",
-            onclick: this.onEdit,
+            text: "删除",
+            onclick: this.onDel,
             formatter: item => {
-              return "<i>编辑</i>";
+              return "<i>删除</i>";
             }
           }
         ]

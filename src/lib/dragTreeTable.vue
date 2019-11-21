@@ -275,6 +275,32 @@
         getchild(lists)
         return curItem;
       },
+      // 对外暴漏
+      DelById(id) {
+        const listKey = this.custom_field.lists
+        const orderKey = this.custom_field.order
+        const idKey = this.custom_field.id
+        const newList = [];
+        const curList = this.data.lists;       
+        function pushData(curList, needPushList) {
+          let order = 0;
+          for( let i = 0; i < curList.length; i++) {
+            const item = curList[i];
+            if (item[idKey] != id) {
+              var obj = func.deepClone(item);
+              obj[orderKey] = order;
+              obj[listKey] = [];
+              needPushList.push(obj);
+              order++;
+              if (item[listKey] && item[listKey].length) {
+                pushData(item[listKey], obj[listKey])
+              }
+            }
+          }
+        }
+        pushData(curList, newList)
+        return newList;
+      },
       // 全选按钮事件
       onCheckAll(evt, func) {
         this.setAllCheckData(this.data.lists, !!evt.target.checked);
