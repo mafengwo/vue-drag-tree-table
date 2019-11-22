@@ -130,7 +130,7 @@
               const list = model[this.custom_field.lists];
               // 判断是否有子节点，如有需递归处理
               if (list && this.isContainChildren) {
-                this.setAllCheckData(model[this.custom_field.lists] || [], !!evt.target.checked)
+                this.setAllCheckData([model] || [], !!evt.target.checked)
               } else {
                 this.$set(model, 'checked', !!evt.target.checked)
               }

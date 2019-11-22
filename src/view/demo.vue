@@ -45,6 +45,7 @@ export default {
     var columns = [
       {
         type: "checkbox",
+        isContainChildren: true,
         width: 100,
         align: "center",
         onChange: (item)=>{
