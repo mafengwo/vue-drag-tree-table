@@ -301,6 +301,27 @@
         pushData(curList, newList)
         return newList;
       },
+      // 递归设置属性,只允许设置组件内置属性
+      deepSetAttr(key, val, list) {
+        const listKey = this.custom_field.lists;
+        for (var i = 0; i< list.length; i++) {
+            list[i][this.custom_field[key]] = val;
+            if (list[i][listKey] && list[i][listKey].length) {
+                this.deepSetAttr(key, val, list[i][listKey])
+            }
+        }
+      },
+      ZipAll() {
+        this.deepSetAttr('open', false, this.data.lists)
+      },
+      OpenAll() {
+        this.deepSetAttr('open', true, this.data.lists)
+      },
+      GetLevelById(id) {
+        var row = this.$refs.table.querySelector('[tree-id="'+id+'"]');
+        var level = row.getAttribute('data-level') * 1;
+        return level
+      },
       // 全选按钮事件
       onCheckAll(evt, func) {
         this.setAllCheckData(this.data.lists, !!evt.target.checked);

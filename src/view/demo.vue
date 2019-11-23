@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+    <button @click="zipAll">全部折叠</button>
+    <button @click="openAll">全部打开</button>
     <dragTreeTable
       ref="table"
       :data="treeData"
@@ -31,8 +33,14 @@ export default {
       console.log(list);
       this.treeData.lists = list;
     },
-    onEdit(item) {
-      alert("当前行的数据" + JSON.stringify(item));
+    onDetail(item) {
+      console.log(item)
+    },
+    openAll() {
+      this.$refs.table.OpenAll();
+    },
+    zipAll() {
+      this.$refs.table.ZipAll()
     },
     onDel(item) {
       const updatedLists = this.$refs.table.DelById(item.id)
