@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "webpack-dev-server --mode development --open --hot --host 0.0.0.0",
     "build": "webpack --mode production --progress --hide-modules",
+    "demo": "webpack --mode development --progress --hide-modules",
     "webpack": "node_modules/webpack/bin/webpack.js --mode=development"
   },
   "dependencies": {
