@@ -5,7 +5,8 @@
                 @click="toggle" 
                 :data-level="depth"
                 :tree-id="model[custom_field.id]"
-                :tree-p-id="model[custom_field.parent_id]"> 
+                :tree-p-id="model[custom_field.parent_id]"
+                v-bind:style="{backgroundColor: model.backgroundColor}"> 
                 <column
                     v-for="(subItem, subIndex) in columns"
                     v-bind:class="['align-' + subItem.align, 'colIndex' + subIndex]"

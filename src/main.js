@@ -17,7 +17,7 @@ import checkboxEvent from './view/checkbox-event.vue';
 import disableDrag from './view/disable-drag.vue';
 import Delete from './view/delete.vue';
 import zip from './view/zip.vue';
-
+import disableRowDrag from './view/disable-row-drag.vue';
 const routes = [
   { path: '/', component: demo },
   { path: '/demo', component: demo },
@@ -36,6 +36,8 @@ const routes = [
   { path: '/disable-drag', component: disableDrag },
   { path: '/delete', component: Delete },
   { path: '/zip', component: zip },
+  { path: '/disable-row-drag', component: disableRowDrag },
+
 ]
 const router = new VueRouter({
   routes
