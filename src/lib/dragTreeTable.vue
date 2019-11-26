@@ -77,7 +77,8 @@
       border: String,
       onlySameLevelCanDrag: String,
       hightRowChange: String,
-      resize: String
+      resize: String,
+      beforeDragOver: Function
     },
     data() {
       return {
@@ -122,7 +123,6 @@
         func.clearHoverStatus()
         this.resetTreeData()
         this.isDraing = false;
-        
         if (this.targetId !== undefined) {
           if (this.hightRowChange !== undefined) {
             this.$nextTick(()=> {
@@ -147,7 +147,10 @@
           // 当前正在拖拽原始块不允许插入
           return
         }
-        
+        let hoverBlock = undefined;
+        let targetId = undefined;
+        let whereInsert = '';
+
         for(let i=0; i < rows.length; i++) {
           const row = rows[i]
           const rx = func.getElementLeft(row);
@@ -161,43 +164,59 @@
             if ( this.onlySameLevelCanDrag !== undefined && pId !== window.dragPId) {
               return;
             }
-            this.targetId = row.getAttribute('tree-id');
-            const hoverBlock = row.children[row.children.length - 1]
-            hoverBlock.style.display = 'block'
-            let whereInsert = ''
+            targetId = row.getAttribute('tree-id');
+            hoverBlock = row.children[row.children.length - 1]
             var rowHeight = row.offsetHeight
-              if (diffY/rowHeight > 3/4) {
-              if (hoverBlock.children[2].style.opacity !== '0.5') {
-                func.clearHoverStatus()
-                hoverBlock.children[2].style.opacity = 0.5
-              }
+            if (diffY/rowHeight > 3/4) {
               whereInsert = 'bottom'
             } else if (diffY/rowHeight > 1/4) {
               if ( this.onlySameLevelCanDrag !== undefined) {
                 // 不允许改变层级结构，只能改变上下顺序逻辑
                 return;
               }
-              if (hoverBlock.children[1].style.opacity !== '0.5') {
-                func.clearHoverStatus()
-                hoverBlock.children[1].style.opacity = 0.5
-              }
               whereInsert = 'center'
             } else {
-              if (hoverBlock.children[0].style.opacity !== '0.5') {
-                func.clearHoverStatus()
-                hoverBlock.children[0].style.opacity = 0.5
-              }
               whereInsert = 'top'
             }
-            this.whereInsert = whereInsert;
             break;
           }
         }
-        if (this.targetId === undefined) {
+        if (targetId === undefined) {
           // 匹配不到清空上一个状态
           func.clearHoverStatus();
           let whereInsert = '';
+          return;
         }
+        
+        let canDrag = true;
+        if (this.beforeDragOver) {
+          const curRow = this.getItemById(this.data.lists, window.dragId);
+          const targetRow = this.getItemById(this.data.lists, targetId);
+          canDrag = this.beforeDragOver(curRow, targetRow, whereInsert);
+        }
+        if (canDrag == false) return;
+        hoverBlock.style.display = 'block'
+        var rowHeight = row.offsetHeight
+        if (whereInsert == 'bottom') {
+          if (hoverBlock.children[2].style.opacity !== '0.5') {
+            func.clearHoverStatus()
+            hoverBlock.children[2].style.opacity = 0.5
+          }
+        } else if (whereInsert == 'center') {
+          if (hoverBlock.children[1].style.opacity !== '0.5') {
+            func.clearHoverStatus()
+            hoverBlock.children[1].style.opacity = 0.5
+          }
+        } else {
+          if (hoverBlock.children[0].style.opacity !== '0.5') {
+            func.clearHoverStatus()
+            hoverBlock.children[0].style.opacity = 0.5
+          }
+        }
+
+        
+        this.targetId = targetId;
+        this.whereInsert = whereInsert;
       },
       resetTreeData() {
         if (this.targetId === undefined) return
@@ -464,6 +483,6 @@
   }
   .tree-row{
     background-color: rgba(64,158,255,0);
-    transition: background-color 1s linear;
+    transition: background-color 0.5s linear;
   }
 </style>
