@@ -3,7 +3,7 @@
 
 [快速体验](https://www.mofazhuan.com/demo/#/ "vue-drag-tree-table")
 
-[API文档](https://www.mofazhuan.com/2019/11/14/vue-drag-tree-table%E6%96%87%E6%A1%A3/ "vue-drag-tree-table") | [DEMO汇总](https://www.mofazhuan.com/2019/11/15/vue-drag-tree-table%20Demo/ "vue-drag-tree-table")
+[API文档](https://www.mofazhuan.com/2019/11/14/vue-drag-tree-table%E6%96%87%E6%A1%A3/ "vue-drag-tree-table") | [DEMO汇总](https://www.mofazhuan.com/2019/11/15/vue-drag-tree-table%20Demo/ "vue-drag-tree-table") | [常见问题](https://www.mofazhuan.com/2019/11/15/vue-drag-tree-table%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/ "vue-drag-tree-table")
 
 IE10+/Chrome/firefox
 > 基于vue实现的可以拖拽排序的树形表格   
