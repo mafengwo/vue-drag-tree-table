@@ -110,9 +110,9 @@
       draging(e) {
         this.isDraing = true;
         if (e.pageX == this.dragX && e.pageY == this.dragY) return
-        this.dragX = e.pageX
-        this.dragY = e.pageY
-        this.filter(e.pageX, e.pageY)
+        this.dragX = e.pageX;
+        this.dragY = e.clientY;
+        this.filter(e.pageX, e.clientY)
         if (e.clientY < 100) {
           window.scrollTo(0, scrollY - 6)
         } else if (e.clientY > (document.body.clientHeight - 160)) {
@@ -137,13 +137,13 @@
       },
       // 查找匹配的行，处理拖拽样式
       filter(x,y) {
+        
         var rows = document.querySelectorAll('.tree-row')
-        this.targetId = undefined
-        const dragOriginElementTop = func.getElementTop(window.dragParentNode, this.$refs.table)
-        const dragOriginElementLeft = func.getElementLeft(window.dragParentNode)
-        const dragW = dragOriginElementLeft + window.dragParentNode.clientWidth
-        const dragH = dragOriginElementTop + window.dragParentNode.clientHeight
-        if (x >= dragOriginElementLeft && x <= dragW && y >= dragOriginElementTop && y <= dragH) {
+        this.targetId = undefined;
+        const dragRect = window.dragParentNode.getBoundingClientRect();
+        const dragW = dragRect.left + window.dragParentNode.clientWidth;
+        const dragH = dragRect.top + window.dragParentNode.clientHeight;
+        if (x >= dragRect.left && x <= dragW && y >= dragRect.top && y <= dragH) {
           // 当前正在拖拽原始块不允许插入
           return
         }
@@ -152,9 +152,10 @@
         let whereInsert = '';
 
         for(let i=0; i < rows.length; i++) {
-          const row = rows[i]
-          const rx = func.getElementLeft(row);
-          const ry = func.getElementTop(row, this.$refs.table);
+          const row = rows[i];
+          const rect = row.getBoundingClientRect();
+          const rx = rect.left;
+          const ry = rect.top;
           const rw = row.clientWidth;
           const rh = row.clientHeight;
           if (x > rx && x < (rx + rw) && y > ry && y < (ry + rh)) {

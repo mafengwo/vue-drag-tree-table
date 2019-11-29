@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <div id="container">
     <button @click="zipAll">全部折叠</button>
     <button @click="openAll">全部打开</button>
     <dragTreeTable
@@ -7,8 +8,10 @@
       :data="treeData"
       :onDrag="onTreeDataChange"
       resize
+      fixed
       :isdraggable="true">
     </dragTreeTable>
+    </div>
   </div>
 </template>
 
