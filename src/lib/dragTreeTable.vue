@@ -94,7 +94,8 @@
           order: 'order',
           lists: 'lists',
           open: 'open',
-          checked: 'checked'
+          checked: 'checked',
+          highlight: 'highlight'
         },
         onCheckChange: null,
         isContainChildren: false,
@@ -322,25 +323,68 @@
         return newList;
       },
       // 递归设置属性,只允许设置组件内置属性
-      deepSetAttr(key, val, list) {
+      deepSetAttr(key, val, list, ids) {
         const listKey = this.custom_field.lists;
         for (var i = 0; i< list.length; i++) {
-            list[i][this.custom_field[key]] = val;
+            if (ids !== undefined) {
+              if (ids.includes(list[i][this.custom_field['id']])) {
+                list[i][this.custom_field[key]] = val;
+              }
+            } else {
+              list[i][this.custom_field[key]] = val;
+            }
             if (list[i][listKey] && list[i][listKey].length) {
-                this.deepSetAttr(key, val, list[i][listKey])
+                this.deepSetAttr(key, val, list[i][listKey], ids)
             }
         }
       },
-      ZipAll() {
-        this.deepSetAttr('open', false, this.data.lists)
+      ZipAll(id, deep=true) {
+        let list = func.deepClone(this.data.lists);
+        this.deepSetAttr('open', false, list);
+        this.data.lists = list;
       },
-      OpenAll() {
-        this.deepSetAttr('open', true, this.data.lists)
+      OpenAll(id, deep=true) {
+        let list = func.deepClone(this.data.lists);
+        this.deepSetAttr('open', true, list);
+        this.data.lists = list;
       },
       GetLevelById(id) {
         var row = this.$refs.table.querySelector('[tree-id="'+id+'"]');
         var level = row.getAttribute('data-level') * 1;
         return level
+      },
+      HighlightRow(id, isHighlight=true, deep=false) {
+        let list = func.deepClone(this.data.lists);
+        let ids = [id];
+        if (deep == true){
+          ids = ids.concat(this.GetChildIds(id, true));
+        }
+        this.deepSetAttr('highlight', isHighlight, list, ids);
+        this.data.lists = list
+      },
+      GetChildIds(id, deep=true) {
+        let ids = []
+        const _this = this;
+        function getChilds(list, id) {
+          const listKey = _this.custom_field.lists;
+          for (var i = 0; i< list.length; i++) {
+            let currentPid = '';
+            let pid = list[i][_this.custom_field['parent_id']];
+            if (id == pid) {
+              currentPid = list[i][_this.custom_field['id']]
+              ids.push(currentPid)
+            } else {
+              currentPid = id
+            }
+            if (deep == true || id == currentPid) {
+              if (list[i][listKey] && list[i][listKey].length) {
+                getChilds(list[i][listKey], currentPid)
+              }
+            }
+          }
+        }
+        getChilds(this.data.lists, id);
+        return ids
       },
       // 全选按钮事件
       onCheckAll(evt, func) {

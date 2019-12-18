@@ -3,6 +3,8 @@
     <div id="container">
     <button @click="zipAll">全部折叠</button>
     <button @click="openAll">全部打开</button>
+    <button @click="highlight(true)">高亮行</button>
+    <button @click="highlight(false)">取消高亮</button>
     <dragTreeTable
       ref="table"
       :data="treeData"
@@ -50,6 +52,9 @@ export default {
       console.log("当前行的数据" , updatedLists);
       this.treeData.lists = updatedLists;
       alert('本地删除成功')
+    },
+    highlight(flag) {
+      this.$refs.table.HighlightRow(383, flag, true);
     }
   },
   mounted() {

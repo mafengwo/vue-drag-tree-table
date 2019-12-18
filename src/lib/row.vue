@@ -6,6 +6,7 @@
                 :data-level="depth"
                 :tree-id="model[custom_field.id]"
                 :tree-p-id="model[custom_field.parent_id]"
+                :class="{'highlight-row': model.highlight == true}"
                 v-bind:style="{backgroundColor: model.backgroundColor}"> 
                 <column
                     v-for="(subItem, subIndex) in columns"
@@ -153,6 +154,9 @@
       line-height: 32px;
       &:hover{
           background: #ecf5ff
+      }
+      &.highlight-row{
+          background: #ffe88c;
       }
       .align-left{
           text-align: left;
