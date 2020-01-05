@@ -94,7 +94,8 @@
           order: 'order',
           lists: 'lists',
           open: 'open',
-          checked: 'checked'
+          checked: 'checked',
+          highlight: 'highlight'
         },
         onCheckChange: null,
         isContainChildren: false,
@@ -110,9 +111,9 @@
       draging(e) {
         this.isDraing = true;
         if (e.pageX == this.dragX && e.pageY == this.dragY) return
-        this.dragX = e.pageX
-        this.dragY = e.pageY
-        this.filter(e.pageX, e.pageY)
+        this.dragX = e.pageX;
+        this.dragY = e.clientY;
+        this.filter(e.pageX, e.clientY)
         if (e.clientY < 100) {
           window.scrollTo(0, scrollY - 6)
         } else if (e.clientY > (document.body.clientHeight - 160)) {
@@ -137,13 +138,13 @@
       },
       // 查找匹配的行，处理拖拽样式
       filter(x,y) {
+        
         var rows = document.querySelectorAll('.tree-row')
-        this.targetId = undefined
-        const dragOriginElementTop = func.getElementTop(window.dragParentNode, this.$refs.table)
-        const dragOriginElementLeft = func.getElementLeft(window.dragParentNode)
-        const dragW = dragOriginElementLeft + window.dragParentNode.clientWidth
-        const dragH = dragOriginElementTop + window.dragParentNode.clientHeight
-        if (x >= dragOriginElementLeft && x <= dragW && y >= dragOriginElementTop && y <= dragH) {
+        this.targetId = undefined;
+        const dragRect = window.dragParentNode.getBoundingClientRect();
+        const dragW = dragRect.left + window.dragParentNode.clientWidth;
+        const dragH = dragRect.top + window.dragParentNode.clientHeight;
+        if (x >= dragRect.left && x <= dragW && y >= dragRect.top && y <= dragH) {
           // 当前正在拖拽原始块不允许插入
           return
         }
@@ -152,9 +153,10 @@
         let whereInsert = '';
 
         for(let i=0; i < rows.length; i++) {
-          const row = rows[i]
-          const rx = func.getElementLeft(row);
-          const ry = func.getElementTop(row, this.$refs.table);
+          const row = rows[i];
+          const rect = row.getBoundingClientRect();
+          const rx = rect.left;
+          const ry = rect.top;
           const rw = row.clientWidth;
           const rh = row.clientHeight;
           if (x > rx && x < (rx + rw) && y > ry && y < (ry + rh)) {
@@ -321,25 +323,115 @@
         return newList;
       },
       // 递归设置属性,只允许设置组件内置属性
-      deepSetAttr(key, val, list) {
+      deepSetAttr(key, val, list, ids) {
         const listKey = this.custom_field.lists;
         for (var i = 0; i< list.length; i++) {
-            list[i][this.custom_field[key]] = val;
+            if (ids !== undefined) {
+              if (ids.includes(list[i][this.custom_field['id']])) {
+                list[i][this.custom_field[key]] = val;
+              }
+            } else {
+              list[i][this.custom_field[key]] = val;
+            }
             if (list[i][listKey] && list[i][listKey].length) {
-                this.deepSetAttr(key, val, list[i][listKey])
+                this.deepSetAttr(key, val, list[i][listKey], ids)
             }
         }
       },
-      ZipAll() {
-        this.deepSetAttr('open', false, this.data.lists)
+      ZipAll(id, deep=true) {
+        let list = func.deepClone(this.data.lists);
+        this.deepSetAttr('open', false, list);
+        this.data.lists = list;
       },
-      OpenAll() {
-        this.deepSetAttr('open', true, this.data.lists)
+      OpenAll(id, deep=true) {
+        let list = func.deepClone(this.data.lists);
+        this.deepSetAttr('open', true, list);
+        this.data.lists = list;
       },
       GetLevelById(id) {
         var row = this.$refs.table.querySelector('[tree-id="'+id+'"]');
         var level = row.getAttribute('data-level') * 1;
         return level
+      },
+      HighlightRow(id, isHighlight=true, deep=false) {
+        let list = func.deepClone(this.data.lists);
+        let ids = [id];
+        if (deep == true){
+          ids = ids.concat(this.GetChildIds(id, true));
+        }
+        this.deepSetAttr('highlight', isHighlight, list, ids);
+        this.data.lists = list
+      },
+      AddRow(pId, data) {
+        const deepList = func.deepClone(this.data.lists);
+        var _this = this;
+        function deep(list) {
+          const listKey = _this.custom_field.lists;
+          for (var i = 0; i< list.length; i++) {
+              if (list[i][_this.custom_field['id']] == pId) {
+                list[i][_this.custom_field['open']] = true;
+                var newRow = Object.assign({}, data);
+                newRow[_this.custom_field['parent_id']] = pId;
+                if (list[i][listKey]) {
+                  newRow[_this.custom_field['order']] = list[i][listKey].length;
+                  list[i][listKey].push(newRow)
+                } else {
+                  list[i][listKey] = [];
+                  newRow[_this.custom_field['order']] = 0;
+                  list[i][listKey].push(newRow)
+                }
+              }
+              if (list[i][listKey] && list[i][listKey].length) {
+                  deep(list[i][listKey])
+              }
+          }
+        }
+        deep(deepList);
+        this.data.lists = deepList
+      },
+      EditRow(id, data) {
+        const deepList = func.deepClone(this.data.lists);
+        var _this = this;
+        function deep(list) {
+          const listKey = _this.custom_field.lists;
+          for (var i = 0; i< list.length; i++) {
+              if (list[i][_this.custom_field['id']] == id) {
+                var newRow = Object.assign({}, list[i], data);
+                console.log(2222, newRow)
+                list[i] = newRow;
+              }
+              if (list[i][listKey] && list[i][listKey].length) {
+                  deep(list[i][listKey])
+              }
+          }
+        }
+        deep(deepList);
+        console.log(deepList)
+        this.data.lists = deepList
+      },
+      GetChildIds(id, deep=true) {
+        let ids = []
+        const _this = this;
+        function getChilds(list, id) {
+          const listKey = _this.custom_field.lists;
+          for (var i = 0; i< list.length; i++) {
+            let currentPid = '';
+            let pid = list[i][_this.custom_field['parent_id']];
+            if (id == pid) {
+              currentPid = list[i][_this.custom_field['id']]
+              ids.push(currentPid)
+            } else {
+              currentPid = id
+            }
+            if (deep == true || id == currentPid) {
+              if (list[i][listKey] && list[i][listKey].length) {
+                getChilds(list[i][listKey], currentPid)
+              }
+            }
+          }
+        }
+        getChilds(this.data.lists, id);
+        return ids
       },
       // 全选按钮事件
       onCheckAll(evt, func) {

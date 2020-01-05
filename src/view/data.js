@@ -14,8 +14,8 @@ const demoDataList =  [
           name: "联系人",
           uri: "/customer/contacts",
           lists: null,
-          open: true,
-          isShowCheckbox: false
+          isShowCheckbox: false,
+          highlight: true
         },
         {
           id: 173,
@@ -40,7 +40,6 @@ const demoDataList =  [
           order: 3,
           name: "客户冲突",
           uri: "无",
-          open: true,
           lists: [
             {
               id: 390,
@@ -92,7 +91,6 @@ const demoDataList =  [
       order: 1,
       name: "审核中心",
       uri: "无",
-      open: true,
       lists: [
         {
           id: 187,
@@ -110,7 +108,6 @@ const demoDataList =  [
       order: 2,
       name: "数据统计",
       uri: "无",
-      open: true,
       lists: [
         {
           id: 222,
@@ -136,7 +133,6 @@ const demoDataList =  [
       order: 3,
       name: "基础数据",
       uri: "",
-      open: true,
       lists: [
         {
           id: 152,
@@ -170,7 +166,16 @@ const demoDataList =  [
           order: 0,
           name: "员工管理",
           uri: "/rbac/userManagement",
-          lists: null
+          lists: [
+            {
+              id: 412,
+              parent_id: 313,
+              order: 0,
+              name: "员工管理-子节点",
+              uri: "/rbac/userManagement",
+              lists: null
+            }
+          ]
         },
         {
           id: 320,

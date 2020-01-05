@@ -1,19 +1,27 @@
 <template>
   <div id="app">
+    <div id="container">
     <button @click="zipAll">全部折叠</button>
     <button @click="openAll">全部打开</button>
+    <button @click="highlight(true)">高亮行</button>
+    <button @click="highlight(false)">取消高亮</button>
     <dragTreeTable
       ref="table"
       :data="treeData"
       :onDrag="onTreeDataChange"
       resize
+      fixed
       :isdraggable="true">
     </dragTreeTable>
+    <Dialog :onSave="onEdit" ref="editDialog"></Dialog>
+    <Dialog :onSave="onAdd" ref="addDialog"></Dialog>
+    </div>
   </div>
 </template>
 
 <script>
 import dragTreeTable from "../lib/dragTreeTable.vue";
+import Dialog from "./dialog.vue";
 import demoDataList from './data';
 export default {
   name: "app",
@@ -26,15 +34,19 @@ export default {
     };
   },
   components: {
-    dragTreeTable
+    dragTreeTable,
+    Dialog
   },
   methods: {
     onTreeDataChange(list) {
       console.log(list);
       this.treeData.lists = list;
     },
-    onDetail(item) {
-      console.log(item)
+    onAdd(pId, data) {
+      this.$refs.table.AddRow(pId, data)
+    },
+    onEdit(id, data) {
+      this.$refs.table.EditRow(id, data)
     },
     openAll() {
       this.$refs.table.OpenAll();
@@ -47,6 +59,9 @@ export default {
       console.log("当前行的数据" , updatedLists);
       this.treeData.lists = updatedLists;
       alert('本地删除成功')
+    },
+    highlight(flag) {
+      this.$refs.table.HighlightRow(383, flag, true);
     }
   },
   mounted() {
@@ -91,12 +106,24 @@ export default {
         align: "center",
         actions: [
           {
-            text: "查看角色",
-            onclick: this.onDetail,
+            text: "添加子节点",
+            onclick: (item) => {
+              this.$refs.addDialog.show('add', item.id);
+            },
             formatter: item => {
-              return "<i>查看角色 </i>";
+              return "<i>添加子节点 </i>";
             }
           },
+          {
+            text: "修改子节点",
+            onclick: (item) => {
+              this.$refs.editDialog.show('edit', item);
+            },
+            formatter: item => {
+              return "<i>修改子节点 </i>";
+            }
+          },
+          
           {
             text: "删除",
             onclick: this.onDel,
