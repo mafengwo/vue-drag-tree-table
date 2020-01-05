@@ -13,12 +13,15 @@
       fixed
       :isdraggable="true">
     </dragTreeTable>
+    <Dialog :onSave="onEdit" ref="editDialog"></Dialog>
+    <Dialog :onSave="onAdd" ref="addDialog"></Dialog>
     </div>
   </div>
 </template>
 
 <script>
 import dragTreeTable from "../lib/dragTreeTable.vue";
+import Dialog from "./dialog.vue";
 import demoDataList from './data';
 export default {
   name: "app",
@@ -31,15 +34,19 @@ export default {
     };
   },
   components: {
-    dragTreeTable
+    dragTreeTable,
+    Dialog
   },
   methods: {
     onTreeDataChange(list) {
       console.log(list);
       this.treeData.lists = list;
     },
-    onDetail(item) {
-      console.log(item)
+    onAdd(pId, data) {
+      this.$refs.table.AddRow(pId, data)
+    },
+    onEdit(id, data) {
+      this.$refs.table.EditRow(id, data)
     },
     openAll() {
       this.$refs.table.OpenAll();
@@ -99,12 +106,24 @@ export default {
         align: "center",
         actions: [
           {
-            text: "查看角色",
-            onclick: this.onDetail,
+            text: "添加子节点",
+            onclick: (item) => {
+              this.$refs.addDialog.show('add', item.id);
+            },
             formatter: item => {
-              return "<i>查看角色 </i>";
+              return "<i>添加子节点 </i>";
             }
           },
+          {
+            text: "修改子节点",
+            onclick: (item) => {
+              this.$refs.editDialog.show('edit', item);
+            },
+            formatter: item => {
+              return "<i>修改子节点 </i>";
+            }
+          },
+          
           {
             text: "删除",
             onclick: this.onDel,

@@ -362,6 +362,53 @@
         this.deepSetAttr('highlight', isHighlight, list, ids);
         this.data.lists = list
       },
+      AddRow(pId, data) {
+        const deepList = func.deepClone(this.data.lists);
+        var _this = this;
+        function deep(list) {
+          const listKey = _this.custom_field.lists;
+          for (var i = 0; i< list.length; i++) {
+              if (list[i][_this.custom_field['id']] == pId) {
+                list[i][_this.custom_field['open']] = true;
+                var newRow = Object.assign({}, data);
+                newRow[_this.custom_field['parent_id']] = pId;
+                if (list[i][listKey]) {
+                  newRow[_this.custom_field['order']] = list[i][listKey].length;
+                  list[i][listKey].push(newRow)
+                } else {
+                  list[i][listKey] = [];
+                  newRow[_this.custom_field['order']] = 0;
+                  list[i][listKey].push(newRow)
+                }
+              }
+              if (list[i][listKey] && list[i][listKey].length) {
+                  deep(list[i][listKey])
+              }
+          }
+        }
+        deep(deepList);
+        this.data.lists = deepList
+      },
+      EditRow(id, data) {
+        const deepList = func.deepClone(this.data.lists);
+        var _this = this;
+        function deep(list) {
+          const listKey = _this.custom_field.lists;
+          for (var i = 0; i< list.length; i++) {
+              if (list[i][_this.custom_field['id']] == id) {
+                var newRow = Object.assign({}, list[i], data);
+                console.log(2222, newRow)
+                list[i] = newRow;
+              }
+              if (list[i][listKey] && list[i][listKey].length) {
+                  deep(list[i][listKey])
+              }
+          }
+        }
+        deep(deepList);
+        console.log(deepList)
+        this.data.lists = deepList
+      },
       GetChildIds(id, deep=true) {
         let ids = []
         const _this = this;
