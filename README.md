@@ -1,7 +1,7 @@
 # vue drag tree table
 
 
-[快速体验](https://www.mofazhuan.com/demo/#/ "vue-drag-tree-table")
+[快速体验](https://www.mofazhuan.com/vue-drag-tree-table-demo#/ "vue-drag-tree-table")
 
 [API文档](https://www.mofazhuan.com/27.html "vue-drag-tree-table") | [DEMO汇总](https://www.mofazhuan.com/31.html "vue-drag-tree-table") | [常见问题](https://www.mofazhuan.com/29.html "vue-drag-tree-table")
 
