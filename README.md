@@ -3,7 +3,7 @@
 
 [快速体验](https://www.mofazhuan.com/demo/#/ "vue-drag-tree-table")
 
-[API文档](https://www.mofazhuan.com/?p=5 "vue-drag-tree-table") | [DEMO汇总](https://www.mofazhuan.com/?p=18 "vue-drag-tree-table") | [常见问题](https://www.mofazhuan.com/?p=11 "vue-drag-tree-table")
+[API文档](https://www.mofazhuan.com/27.html "vue-drag-tree-table") | [DEMO汇总](https://www.mofazhuan.com/31.html "vue-drag-tree-table") | [常见问题](https://www.mofazhuan.com/29.html "vue-drag-tree-table")
 
 IE10+/Chrome/firefox
 
@@ -61,6 +61,6 @@ export default {
 </script>
 
 ```
-更多组件详细功能请参考 [API文档](https://www.mofazhuan.com/2019/11/14/vue-drag-tree-table%E6%96%87%E6%A1%A3/ "vue-drag-tree-table")
+更多组件详细功能请参考 [API文档](https://www.mofazhuan.com/27.html "vue-drag-tree-table")
 
 [更新日志-CHANGELOG](CHANGELOG.md 'vue-drag-tree-table')
