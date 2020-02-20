@@ -298,4 +298,3 @@ custom_field: {
 
 [更新日志-CHANGELOG](CHANGELOG.md 'vue-drag-tree-table')
 
-## 我的微信```cold_daywx```，欢迎沟通（找我加新需求的记得先来个star支持下哦）
