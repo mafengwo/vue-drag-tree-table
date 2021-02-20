@@ -109,6 +109,8 @@
     },
     methods: {
       draging(e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = "move"
         this.isDraing = true;
         if (e.pageX == this.dragX && e.pageY == this.dragY) return
         this.dragX = e.pageX;
