@@ -31,3 +31,12 @@
 - 
 ### Fixed
 -
+
+## [2.2.0] - 2021-03-15
+### Added
+- 详见PR，支持slot插槽 https://github.com/mafengwo/vue-drag-tree-table/pull/72
+
+### Changed
+- 
+### Removed
+- 
