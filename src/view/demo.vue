@@ -23,7 +23,7 @@
     <template #action="{row}">
       <a class="action-item" @click.stop.prevent="add(row)">添加子节点</a>
       <a class="action-item" @click.stop.prevent="edit(row)">修改子节点</a>
-      <a class="action-item" @click.stop.prevent="onDel"><i>删除</i></a>
+      <a class="action-item" @click.stop.prevent="onDel(row)"><i>删除</i></a>
     </template>
     </dragTreeTable>
     <Dialog :onSave="onEdit" ref="editDialog"></Dialog>
@@ -116,39 +116,44 @@ export default {
         align: "center"
       },
       {
-        title: "操作",
+        title: "操作(使用actions)",
         type: "action",
         flex: 1,
         align: "center",
-        // actions: [
-        //   {
-        //     text: "添加子节点",
-        //     onclick: (item) => {
-        //       this.$refs.addDialog.show('add', item.id);
-        //     },
-        //     formatter: item => {
-        //       return "<i>添加子节点 </i>";
-        //     }
-        //   },
-        //   {
-        //     text: "修改子节点",
-        //     onclick: (item) => {
-        //       this.$refs.editDialog.show('edit', item);
-        //     },
-        //     formatter: item => {
-        //       return "<i>修改子节点 </i>";
-        //     }
-        //   },
-          
-        //   {
-        //     text: "删除",
-        //     onclick: this.onDel,
-        //     formatter: item => {
-        //       return "<i>删除</i>";
-        //     }
-        //   }
-        // ]
-      }
+        actions: [
+          {
+            text: "添加子节点",
+            onclick: (item) => {
+              this.$refs.addDialog.show('add', item.id);
+            },
+            formatter: item => {
+              return "<i>添加子节点 </i>";
+            }
+          },
+          {
+            text: "修改子节点",
+            onclick: (item) => {
+              this.$refs.editDialog.show('edit', item);
+            },
+            formatter: item => {
+              return "<i>修改子节点 </i>";
+            }
+          },
+          {
+            text: "删除",
+            onclick: this.onDel,
+            formatter: item => {
+              return "<i>删除</i>";
+            }
+          }
+        ]
+      },
+      {
+        title: "操作(使用slot自定义)",
+        type: "action",
+        flex: 1,
+        align: "center",
+      },
     ];
     this.treeData = {
       columns: columns,

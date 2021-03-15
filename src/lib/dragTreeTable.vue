@@ -77,6 +77,7 @@
         default: true
       },
       data: Object,
+      onDrag: Function,
       fixed: String | Boolean,
       height: String | Number,
       border: String,
@@ -270,6 +271,7 @@
         }
         pushData(curList, newList)
         this.resetOrder(newList)
+        this.onDrag(newList, curDragItem, taggetItem, _this.whereInsert)
         this.$emit("drag",newList, curDragItem, taggetItem, _this.whereInsert);
       },
       // 重置所有数据的顺序order
