@@ -77,7 +77,10 @@
         default: true
       },
       data: Object,
-      onDrag: Function,
+      onDrag: {
+        type:Function,
+        default: ()=>{}
+      },
       fixed: String | Boolean,
       height: String | Number,
       border: String,
