@@ -8,7 +8,7 @@
             :border="border === undefined ? resize : border"
             v-bind:class="['align-' + item.titleAlign, 'colIndex' + index]"
             :key="index" >
-            <input 
+            <input
               v-if="item.type == 'checkbox'"
               class="checkbox"
               type="checkbox"
@@ -33,6 +33,12 @@
             :border="border === undefined ? resize : border"
             :isContainChildren="isContainChildren"
             :key="index">
+              <template v-slot:selection="{row}">
+                <slot name="selection" v-bind:row="row"></slot>
+              </template>
+              <template v-for="(subItem, subIndex) in data.columns"  v-slot:[subItem.type]="{row}">
+                <slot :name="subItem.type" v-bind:row="row"></slot>
+              </template>
         </row>
         </div>
         <div class="drag-line">
@@ -71,7 +77,10 @@
         default: true
       },
       data: Object,
-      onDrag: Function,
+      onDrag: {
+        type:Function,
+        default: ()=>{}
+      },
       fixed: String | Boolean,
       height: String | Number,
       border: String,
@@ -268,6 +277,7 @@
         pushData(curList, newList)
         this.resetOrder(newList)
         this.onDrag(newList, curDragItem, taggetItem, _this.whereInsert)
+        this.$emit("drag",newList, curDragItem, taggetItem, _this.whereInsert);
       },
       // 重置所有数据的顺序order
       resetOrder(list) {

@@ -23,17 +23,8 @@
                         <span v-else class="zip-icon arrow-transparent">
                         </span>
                         <span v-if="subItem.formatter" v-html="subItem.formatter(model)"></span>
-                        <span v-else v-html="model[subItem.field]"></span>
-
-                    </span>
-                    <span v-else-if="subItem.type === 'action'">
-                        <a class="action-item"
-                            v-for="(acItem, acIndex) in subItem.actions"
-                            :key="acIndex"
-                            type="text" size="small" 
-                            @click.stop.prevent="acItem.onclick(model)">
-                            <i :class="acItem.icon" v-html="acItem.formatter(model)"></i>
-                        </a>
+                        <span v-else-if="subItem.field" v-html="model[subItem.field]"></span>
+                        <slot v-else name="selection" v-bind:row="model"></slot>
                     </span>
                     <span v-else-if="subItem.type === 'checkbox'">
                       <input type="checkbox"
@@ -42,6 +33,21 @@
                         v-model="model[custom_field.checked]"
                         class="checkbox action-item"
                         @click.stop="onCheckboxClick($event, model)"/>
+                    </span>
+                    <span v-else-if="subItem.type === 'action'">
+                        <span v-if="subItem.actions">
+                            <a class="action-item"
+                                v-for="(acItem, acIndex) in subItem.actions"
+                                :key="acIndex"
+                                type="text" size="small"
+                                @click.stop.prevent="acItem.onclick(model)">
+                                <i :class="acItem.icon" v-html="acItem.formatter(model)"></i>
+                            </a>
+                        </span>
+                        <span v-else><slot name="action" v-bind:row="model"></slot></span>
+                    </span>
+                    <span v-else-if="subItem.type">
+                        <slot :name="subItem.type" v-bind:row="model"></slot>
                     </span>
                     <span v-else>
                         <span v-if="subItem.formatter" v-html="subItem.formatter(model)"></span>
@@ -73,6 +79,12 @@
                 :onCheck="onCheck"
                 :isContainChildren="isContainChildren"
                 v-if="isFolder">
+                    <template v-slot:selection="{row}">
+                    <slot name="selection" v-bind:row="row"></slot>
+                    </template>
+                    <template v-for="(subItem, subIndex) in columns"  v-slot:[subItem.type]="{row}">
+                    <slot :name="subItem.type" v-bind:row="row"></slot>
+                    </template>
             </row>
         </div>
         

@@ -2,16 +2,29 @@
   <div id="app">
     <div id="container">
     <button @click="zipAll">全部折叠</button>
-    <button @click="openAll">全部打开</button>
+    <button @click="openAll">全部开</button>
     <button @click="highlight(true)">高亮行</button>
     <button @click="highlight(false)">取消高亮</button>
     <dragTreeTable
       ref="table"
       :data="treeData"
-      :onDrag="onTreeDataChange"
+      @drag="onTreeDataChange"
       resize
       fixed
       :isdraggable="true">
+    <template #selection="{row}">
+      {{ row.name }}
+    </template>
+
+    <template #id="{row}">
+      {{ row.id }}
+    </template>
+
+    <template #action="{row}">
+      <a class="action-item" @click.stop.prevent="add(row)">添加子节点</a>
+      <a class="action-item" @click.stop.prevent="edit(row)">修改子节点</a>
+      <a class="action-item" @click.stop.prevent="onDel(row)"><i>删除</i></a>
+    </template>
     </dragTreeTable>
     <Dialog :onSave="onEdit" ref="editDialog"></Dialog>
     <Dialog :onSave="onAdd" ref="addDialog"></Dialog>
@@ -62,6 +75,12 @@ export default {
     },
     highlight(flag) {
       this.$refs.table.HighlightRow(383, flag, true);
+    },
+    add(row) {
+      this.$refs.addDialog.show('add', row.id);
+    },
+    edit(row) {
+      this.$refs.editDialog.show('edit', row);
     }
   },
   mounted() {
@@ -83,13 +102,10 @@ export default {
         width: 200,
         align: "left",
         titleAlign: "left",
-        formatter: item => {
-          return "<span>" + item.name + "</span>";
-        }
       },
       {
         title: "ID",
-        field: "id",
+        type: "id",
         width: 100,
         align: "center"
       },
@@ -100,7 +116,7 @@ export default {
         align: "center"
       },
       {
-        title: "操作",
+        title: "操作(使用actions)",
         type: "action",
         flex: 1,
         align: "center",
@@ -123,7 +139,6 @@ export default {
               return "<i>修改子节点 </i>";
             }
           },
-          
           {
             text: "删除",
             onclick: this.onDel,
@@ -132,7 +147,13 @@ export default {
             }
           }
         ]
-      }
+      },
+      {
+        title: "操作(使用slot自定义)",
+        type: "action",
+        flex: 1,
+        align: "center",
+      },
     ];
     this.treeData = {
       columns: columns,
