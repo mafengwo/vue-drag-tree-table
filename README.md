@@ -2,7 +2,7 @@
 
 IE10+/Chrome/firefox
 
-## 请更新到```2.0.8```及以上版本 [在线DEMO](https://mofazhuan.com/vue-drag-tree-table-demo#/)
+## 请更新到```2.0.8```及以上版本 
 > 基于vue实现的可以拖拽排序的树形表格  
 
 支持拖拽排序、固定头、拖拽改变行宽，checkbox多选、自定义单元格内容、设置行的背景色、动态控制某些行是否可以拖拽等等....
