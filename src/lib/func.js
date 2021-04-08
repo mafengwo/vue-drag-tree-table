@@ -1,5 +1,11 @@
 
 const func = {
+  getParent(target) {
+    if (target.$parent.rowClick) {
+      return target.$parent.rowClick
+    }
+      return this.getParent(target.$parent)
+  },  
   clearHoverStatus() {
     var rows = document.querySelectorAll('.tree-row')
     for(let i=0; i < rows.length; i++) {

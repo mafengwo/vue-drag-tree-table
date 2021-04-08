@@ -2,7 +2,7 @@
         <div class="tree-block" :draggable="!!isdraggable" @dragstart="dragstart($event)"
             @dragend="dragend($event)">
             <div class="tree-row"
-                @click="toggle" 
+                @click="toggle($event,model)" 
                 :data-level="depth"
                 :tree-id="model[custom_field.id]"
                 :tree-p-id="model[custom_field.parent_id]"
@@ -92,6 +92,7 @@
     <script>
     import column from './column.vue'
     import space from './space.vue'
+    import func from './func';
     export default {
       name: 'row',
         props: ['model','depth','columns','isdraggable','border', 'custom_field','onCheck','isContainChildren'],
@@ -111,7 +112,8 @@
             }
         },
         methods: {
-            toggle() {
+            toggle(event,row) {
+                func.getParent(this)(event,row)
                 if(this.isFolder) {
                     this.model[this.custom_field.open] = !this.model[this.custom_field.open];
                     this.$forceUpdate()

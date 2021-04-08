@@ -32,7 +32,8 @@
             :onCheck="onSingleCheckChange"
             :border="border === undefined ? resize : border"
             :isContainChildren="isContainChildren"
-            :key="index">
+            :key="index"
+            @rowClick="rowClick">
               <template v-slot:selection="{row}">
                 <slot name="selection" v-bind:row="row"></slot>
               </template>
@@ -117,6 +118,9 @@
       }
     },
     methods: {
+      rowClick(event, row) {
+        this.$emit('rowClick', event, row);
+      },
       draging(e) {
         e.preventDefault();
         e.dataTransfer.dropEffect = "move"
