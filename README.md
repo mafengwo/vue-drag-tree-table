@@ -175,6 +175,7 @@ width|否||Number|单元格宽度
 align|否|left|left,center,right|单元格对齐方式
 flex|否||Number|自动填充空余区域，遵循CSS的flex布局
 formatter|否||Function|自定义单元格显示内容,参数为当前行数据
+render|否||Function|(vue jsx)自定义单元格显示内容, 参数为当前行数据、列索引(row, index)，在未定义type使用render
 
 
 **columns数据事例**
@@ -198,6 +199,16 @@ formatter|否||Function|自定义单元格显示内容,参数为当前行数据
     field: 'url',
     width: 200,
     align: 'center'
+  },
+  {
+    title: "JSX使用",
+    width: 200,
+    align: "center",
+    render: ({ row, columnIndex }) => {
+      console.log({ row });
+      console.log({ columnIndex });
+      return <span>{row.id}</span>;
+    },
   },
   {
     title: '操作',
